@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
-import { FiHeart, FiShare2, FiDownload, FiPlay, FiPause } from 'react-icons/fi';
-import { toast } from 'react-toastify';
-import api from '../utils/api';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import axios from "axios";
+import { FiHeart, FiShare2, FiDownload, FiPlay, FiPause } from "react-icons/fi";
+import { toast } from "react-toastify";
+import api from "../utils/api";
 
 const PodcastDetails = () => {
   const { id } = useParams();
@@ -26,17 +26,17 @@ const PodcastDetails = () => {
         if (response.data.success) {
           setPodcast(response.data.data);
           setError(null);
-          
+
           // If there's an audio file, set it up
           if (response.data.data.audioFile?.url) {
             audio.src = response.data.data.audioFile.url;
           }
         } else {
-          throw new Error('Failed to fetch podcast');
+          throw new Error("Failed to fetch podcast");
         }
       } catch (err) {
-        console.error('Error fetching podcast:', err);
-        setError('Failed to load podcast details. Please try again later.');
+        console.error("Error fetching podcast:", err);
+        setError("Failed to load podcast details. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -46,20 +46,20 @@ const PodcastDetails = () => {
   }, [id, audio]);
 
   useEffect(() => {
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('ended', handleAudioEnded);
-    audio.addEventListener('error', (e) => {
-      console.error('Audio error:', e);
-      toast.error('Error loading audio file');
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleAudioEnded);
+    audio.addEventListener("error", (e) => {
+      console.error("Audio error:", e);
+      toast.error("Error loading audio file");
       setIsPlaying(false);
     });
 
     return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('ended', handleAudioEnded);
-      audio.removeEventListener('error', () => {});
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleAudioEnded);
+      audio.removeEventListener("error", () => {});
       audio.pause();
     };
   }, [audio]);
@@ -84,13 +84,13 @@ const PodcastDetails = () => {
       audio.pause();
     } else {
       if (!podcast.audioFile?.url) {
-        toast.error('Audio file not available');
+        toast.error("Audio file not available");
         return;
       }
       audio.src = podcast.audioFile.url;
-      audio.play().catch(err => {
-        console.error('Error playing audio:', err);
-        toast.error('Failed to play audio. Please try again.');
+      audio.play().catch((err) => {
+        console.error("Error playing audio:", err);
+        toast.error("Failed to play audio. Please try again.");
         setIsPlaying(false);
       });
     }
@@ -106,12 +106,12 @@ const PodcastDetails = () => {
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handleLike = async () => {
     if (!user) {
-      toast.error('Please login to like this podcast');
+      toast.error("Please login to like this podcast");
       return;
     }
 
@@ -120,21 +120,21 @@ const PodcastDetails = () => {
     try {
       setIsLiking(true);
       const response = await api.put(`/podcasts/${id}/like`);
-      
+
       if (response.data.success) {
         // Update the podcast state with the new likes array
-        setPodcast(prevPodcast => ({
+        setPodcast((prevPodcast) => ({
           ...prevPodcast,
-          likes: isLiked 
-            ? (prevPodcast.likes || []).filter(likeId => likeId !== user._id)
-            : [...(prevPodcast.likes || []), user._id]
+          likes: isLiked
+            ? (prevPodcast.likes || []).filter((likeId) => likeId !== user._id)
+            : [...(prevPodcast.likes || []), user._id],
         }));
-        
-        toast.success(isLiked ? 'Podcast unliked' : 'Podcast liked');
+
+        toast.success(isLiked ? "Podcast unliked" : "Podcast liked");
       }
     } catch (err) {
-      console.error('Error liking podcast:', err);
-      toast.error('Failed to like podcast. Please try again.');
+      console.error("Error liking podcast:", err);
+      toast.error("Failed to like podcast. Please try again.");
     } finally {
       setIsLiking(false);
     }
@@ -142,8 +142,24 @@ const PodcastDetails = () => {
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast.success('Link copied to clipboard!');
+    toast.success("Link copied to clipboard!");
   };
+  const handleDownload = (url) => {
+    if (!url) return;
+  
+    // Insert 'fl_attachment' after 'upload' in the Cloudinary URL
+    const downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
+  
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', 'PodcastAudio.mp3'); // Optional filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
+  
+  
 
   if (loading) {
     return (
@@ -157,7 +173,9 @@ const PodcastDetails = () => {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
         <div className="text-red-500 text-center">
-          <p className="text-xl font-semibold mb-2">Oops! Something went wrong</p>
+          <p className="text-xl font-semibold mb-2">
+            Oops! Something went wrong
+          </p>
           <p>{error}</p>
         </div>
       </div>
@@ -180,18 +198,21 @@ const PodcastDetails = () => {
         {/* Cover Image */}
         <div className="relative h-64 md:h-96">
           <img
-            src={podcast.coverImage?.url || '/default-podcast-cover.jpg'}
+            src={podcast.coverImage?.url || "/default-podcast-cover.jpg"}
             alt={podcast.title}
             className="w-full h-full object-cover"
             onError={(e) => {
-              e.target.src = '/default-podcast-cover.jpg';
+              e.target.src = "/default-podcast-cover.jpg";
             }}
           />
           <div className="absolute inset-0 bg-black bg-opacity-40"></div>
           <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">{podcast.title}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              {podcast.title}
+            </h1>
             <p className="text-lg opacity-90">
-              By {podcast.creator?.username || 'Unknown Creator'} • {podcast.category?.name || 'Uncategorized'}
+              By {podcast.creator?.username || "Unknown Creator"} •{" "}
+              {podcast.category?.name || "Uncategorized"}
             </p>
           </div>
         </div>
@@ -229,8 +250,8 @@ const PodcastDetails = () => {
               onClick={handleLike}
               className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
                 isLiked
-                  ? 'bg-pink-50 text-pink-600'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? "bg-pink-50 text-pink-600"
+                  : "text-gray-600 hover:bg-gray-50"
               }`}
             >
               <FiHeart />
@@ -244,20 +265,25 @@ const PodcastDetails = () => {
               <span>Share</span>
             </button>
           </div>
-          <a
-            href={podcast.audioFile?.url}
-            download
-            className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
-          >
-            <FiDownload />
-            <span>Download</span>
-          </a>
+          <button
+  onClick={() => handleDownload(podcast.audioFile?.url)}
+  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+>
+  <FiDownload />
+  <span>Download</span>
+</button>
+
+
+
+
         </div>
 
         {/* Description */}
         <div className="p-6">
           <h2 className="text-xl font-semibold mb-4">About this episode</h2>
-          <p className="text-gray-600 whitespace-pre-wrap">{podcast.description}</p>
+          <p className="text-gray-600 whitespace-pre-wrap">
+            {podcast.description}
+          </p>
         </div>
 
         {/* Tags */}
