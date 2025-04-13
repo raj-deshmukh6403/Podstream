@@ -17,6 +17,8 @@ const PodcastDetails = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isLiking, setIsLiking] = useState(false);
+  const [tagData, setTagData] = useState([]);
+  const [isLoadingTags, setIsLoadingTags] = useState(false);
 
   useEffect(() => {
     const fetchPodcast = async () => {
@@ -44,6 +46,29 @@ const PodcastDetails = () => {
 
     fetchPodcast();
   }, [id, audio]);
+
+  // Fetch tag data if needed
+  useEffect(() => {
+    const fetchTagData = async () => {
+      // Only fetch tag data if podcast has tags and they appear to be IDs
+      if (podcast?.tags && podcast.tags.length > 0 && 
+          podcast.tags.some(tag => typeof tag === 'string' && tag.match(/^[0-9a-fA-F]{24}$/))) {
+        try {
+          setIsLoadingTags(true);
+          const response = await api.get('/tags');
+          if (response.data.success) {
+            setTagData(response.data.data);
+          }
+        } catch (err) {
+          console.error("Error fetching tags:", err);
+        } finally {
+          setIsLoadingTags(false);
+        }
+      }
+    };
+
+    fetchTagData();
+  }, [podcast]);
 
   useEffect(() => {
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -144,6 +169,7 @@ const PodcastDetails = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied to clipboard!");
   };
+
   const handleDownload = (url) => {
     if (!url) return;
   
@@ -158,8 +184,24 @@ const PodcastDetails = () => {
     document.body.removeChild(link);
   };
   
-  
-  
+  // Helper function to find tag name from tag ID
+  const findTagName = (tag) => {
+    // If tag is already an object with name property, return the name
+    if (typeof tag === 'object' && tag.name) {
+      return tag.name;
+    }
+    
+    // If tag is an ID, find corresponding tag in tagData
+    if (typeof tag === 'string') {
+      const foundTag = tagData.find(t => t._id === tag);
+      if (foundTag) {
+        return foundTag.name;
+      }
+    }
+    
+    // If no match is found, return the tag itself as fallback
+    return tag;
+  };
 
   if (loading) {
     return (
@@ -266,16 +308,12 @@ const PodcastDetails = () => {
             </button>
           </div>
           <button
-  onClick={() => handleDownload(podcast.audioFile?.url)}
-  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
->
-  <FiDownload />
-  <span>Download</span>
-</button>
-
-
-
-
+            onClick={() => handleDownload(podcast.audioFile?.url)}
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            <FiDownload />
+            <span>Download</span>
+          </button>
         </div>
 
         {/* Description */}
@@ -286,18 +324,22 @@ const PodcastDetails = () => {
           </p>
         </div>
 
-        {/* Tags */}
+        {/* Tags - Updated to use findTagName function */}
         {podcast.tags && podcast.tags.length > 0 && (
           <div className="px-6 pb-6">
             <div className="flex flex-wrap gap-2">
-              {podcast.tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm"
-                >
-                  {tag}
-                </span>
-              ))}
+              {isLoadingTags ? (
+                <span className="text-sm text-gray-500">Loading tags...</span>
+              ) : (
+                podcast.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm"
+                  >
+                    {findTagName(tag)}
+                  </span>
+                ))
+              )}
             </div>
           </div>
         )}
