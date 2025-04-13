@@ -22,7 +22,7 @@ const AdminSidebar = ({ isOpen, toggleSidebar }) => {
     { path: '/admin/categories', icon: <Grid size={20} />, label: 'Categories' },
     { path: '/admin/tags', icon: <Tag size={20} />, label: 'Tags' },
     { path: '/admin/analytics', icon: <BarChart2 size={20} />, label: 'Analytics' },
-    { path: '/admin/reports', icon: <FileText size={20} />, label: 'Reports' },
+    // { path: '/admin/reports', icon: <FileText size={20} />, label: 'Reports' },
   ];
   
   return (
