@@ -45,101 +45,101 @@ const getAuthHeader = () => {
 // Admin API endpoints with headers added
 export const adminApi = {
   addUser: (userData) => 
-    axios.post('/api/admin/users', userData, {
+    axios.post('/admin/users', userData, {
       headers: getAuthHeader()
     }),
 
   getStats: () =>
-    axios.get('/api/admin/stats', {
+    axios.get('/admin/stats', {
       headers: getAuthHeader()
     }),
 
   getUsers: (page = 1, search = '', role = '') =>
-    axios.get(`/api/admin/users?page=${page}&search=${search}&role=${role}`, {
+    axios.get(`/admin/users?page=${page}&search=${search}&role=${role}`, {
       headers: getAuthHeader()
     }),
 
   getPodcasts: (page = 1, search = '', category = '') =>
-    axios.get(`/api/admin/podcasts?page=${page}&search=${search}&category=${category}`, {
+    axios.get(`/admin/podcasts?page=${page}&search=${search}&category=${category}`, {
       headers: getAuthHeader()
     }),
 
   getCategories: () =>
-    axios.get('/api/admin/categories', {
+    axios.get('/admin/categories', {
       headers: getAuthHeader()
     }),
 
   getTags: () =>
-    axios.get('/api/admin/tags', {
+    axios.get('/admin/tags', {
       headers: getAuthHeader()
     }),
 
   deleteUser: (userId) =>
-    axios.delete(`/api/admin/users/${userId}`, {
+    axios.delete(`/admin/users/${userId}`, {
       headers: getAuthHeader()
     }),
 
   updateUserRole: (userId, role) =>
-    axios.patch(`/api/admin/users/${userId}/role`, { role }, {
+    axios.patch(`/admin/users/${userId}/role`, { role }, {
       headers: getAuthHeader()
     }),
 
   createCategory: (data) =>
-    axios.post('/api/admin/categories', data, {
+    axios.post('/admin/categories', data, {
       headers: getAuthHeader()
     }),
 
   updateCategory: (id, data) =>
-    axios.put(`/api/admin/categories/${id}`, data, {
+    axios.put(`/admin/categories/${id}`, data, {
       headers: getAuthHeader()
     }),
 
   deleteCategory: (id) =>
-    axios.delete(`/api/admin/categories/${id}`, {
+    axios.delete(`/admin/categories/${id}`, {
       headers: getAuthHeader()
     }),
 
   createTag: (data) =>
-    axios.post('/api/admin/tags', data, {
+    axios.post('/admin/tags', data, {
       headers: getAuthHeader()
     }),
 
   updateTag: (id, data) =>
-    axios.put(`/api/admin/tags/${id}`, data, {
+    axios.put(`/admin/tags/${id}`, data, {
       headers: getAuthHeader()
     }),
 
   deleteTag: (id) =>
-    axios.delete(`/api/admin/tags/${id}`, {
+    axios.delete(`/admin/tags/${id}`, {
       headers: getAuthHeader()
     }),
 
   deletePodcast: (podcastId) =>
-    axios.delete(`/api/admin/podcasts/${podcastId}`, {
+    axios.delete(`/admin/podcasts/${podcastId}`, {
       headers: getAuthHeader()
     }),
 
   updatePodcastStatus: (podcastId, status) =>
-    axios.patch(`/api/admin/podcasts/${podcastId}/status`, { status }, {
+    axios.patch(`/admin/podcasts/${podcastId}/status`, { status }, {
       headers: getAuthHeader()
     }),
   updatePodcast: (podcastId, podcastData) =>
-    axios.put(`/api/admin/podcasts/${podcastId}`, podcastData, {
+    axios.put(`/admin/podcasts/${podcastId}`, podcastData, {
       headers: getAuthHeader()
     }),
 
   getAnalytics: (period = 'week') =>
-    axios.get(`/api/admin/analytics?period=${period}`, {
+    axios.get(`/admin/analytics?period=${period}`, {
       headers: getAuthHeader()
     }),
 
   getReports: () =>
-    axios.get('/api/admin/reports', {
+    axios.get('/admin/reports', {
       headers: getAuthHeader()
     }),
 
   generateReport: (type, format) =>
-    axios.post('/api/admin/reports/generate', { type, format }, {
+    axios.post('/admin/reports/generate', { type, format }, {
       headers: getAuthHeader()
     })
 };
