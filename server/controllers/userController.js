@@ -8,9 +8,12 @@ const multer = require('multer');
 const sendEmail = require('../utils/emailSender');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
+
+
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, 'temp/');  // Temporary folder before uploading to Cloudinary
+    // Use the /tmp directory which is writable in serverless environments
+    cb(null, '/tmp');
   },
   filename: function(req, file, cb) {
     cb(null, `user-${Date.now()}${path.extname(file.originalname)}`);
@@ -30,6 +33,7 @@ exports.upload = multer({
   fileFilter: fileFilter,
   limits: { fileSize: 1024 * 1024 * 5 } // 5MB limit
 });
+
 exports.uploadProfileImage = async (req, res, next) => {
   try {
     if (!req.file) {
@@ -39,6 +43,9 @@ exports.uploadProfileImage = async (req, res, next) => {
       });
     }
 
+    // Log the path to debug
+    console.log('File path:', req.file.path);
+
     // Upload to Cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: 'profile-images',
@@ -47,8 +54,13 @@ exports.uploadProfileImage = async (req, res, next) => {
       crop: 'limit'
     });
 
-    // Remove the temporary file
-    fs.unlinkSync(req.file.path);
+    // Remove the temporary file with error handling
+    try {
+      fs.unlinkSync(req.file.path);
+    } catch (unlinkError) {
+      console.error('Error deleting temp file:', unlinkError);
+      // Continue execution even if file deletion fails
+    }
 
     // Update user with Cloudinary image data
     const user = await User.findByIdAndUpdate(
@@ -67,11 +79,22 @@ exports.uploadProfileImage = async (req, res, next) => {
       data: user
     });
   } catch (error) {
+    console.error('Upload error:', error);
+    
     // If there's an error, make sure to remove the temporary file if it exists
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
+    if (req.file && req.file.path) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (unlinkError) {
+        console.error('Error deleting temp file after upload error:', unlinkError);
+      }
     }
-    next(error);
+    
+    return res.status(500).json({
+      success: false,
+      message: 'File upload failed',
+      error: error.message
+    });
   }
 };
 
