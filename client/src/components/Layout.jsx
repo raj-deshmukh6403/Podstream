@@ -404,9 +404,11 @@ export default function Layout() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <span className="text-2xl">🎙</span>
+              <span className="w-8 h-8">
+                 <img src="../podverse.png" alt="Logo" className="w-full h-full object-contain" />
+              </span>
                 <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Podcastify
+                  PodStream
                 </span>
               </div>
               <p className="text-gray-600">
