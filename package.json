@@ -23,6 +23,7 @@
   "dependencies": {
     "cloudinary": "^2.6.0",
     "concurrently": "^8.2.2",
+    "framer-motion": "^12.6.3",
     "lucide-react": "^0.487.0"
   }
 }

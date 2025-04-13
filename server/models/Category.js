@@ -16,7 +16,8 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true
-  }
+  },
+  imageFilename: { type: String, default: null }
 }, {
   timestamps: true
 });

@@ -42,4 +42,29 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/api/categories', async (req, res) => {
+  try {
+    const categories = await Category.find();
+    
+    // Map categories and add image URLs
+    const categoriesWithImages = categories.map(category => {
+      const categoryObj = category.toObject();
+      
+      // Create image URL based on category name or stored filename
+      if (categoryObj.imageFilename) {
+        categoryObj.imageUrl = `/images/categories/${categoryObj.imageFilename}`;
+      } else {
+        // Use name-based default if no specific image is set
+        categoryObj.imageUrl = `/images/categories/${categoryObj.name.toLowerCase()}.jpg`;
+      }
+      
+      return categoryObj;
+    });
+    
+    res.json({ success: true, data: categoriesWithImages });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 module.exports = router; 

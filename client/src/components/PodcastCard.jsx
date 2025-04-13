@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiPlay, FiUser, FiCalendar, FiClock, FiHeart, FiHeadphones } from 'react-icons/fi';
+import { FiPlay, FiUser, FiClock, FiHeadphones } from 'react-icons/fi';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import moment from 'moment';
-import { FaPlay, FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import api from '../utils/api';
 
-const PodcastCard = ({ podcast, onLike }) => {
+const PodcastCard = ({ podcast, onLike, canPlay }) => {
   const { user } = useAuth();
   const [isLiking, setIsLiking] = useState(false);
   const [likes, setLikes] = useState(podcast.likes || []);
   const isLiked = user && likes.includes(user._id);
-  
+
   // Format duration from seconds to MM:SS
   const formatDuration = (seconds) => {
     if (!seconds) return '0:00';
@@ -20,7 +20,7 @@ const PodcastCard = ({ podcast, onLike }) => {
     const remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   };
-  
+
   // Truncate description
   const truncateDescription = (text, maxLength = 120) => {
     if (!text) return '';
@@ -31,7 +31,7 @@ const PodcastCard = ({ podcast, onLike }) => {
   const handleLike = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (!user) {
       toast.error('Please login to like podcasts');
       return;
@@ -42,13 +42,13 @@ const PodcastCard = ({ podcast, onLike }) => {
     try {
       setIsLiking(true);
       const response = await api.put(`/podcasts/${podcast._id}/like`);
-      
+
       if (response.data.success) {
         const newLikes = isLiked
-          ? likes.filter(id => id !== user._id)
+          ? likes.filter((id) => id !== user._id)
           : [...likes, user._id];
         setLikes(newLikes);
-        
+
         // Call the onLike callback if provided
         if (onLike) {
           onLike(podcast._id, !isLiked);
@@ -67,6 +67,12 @@ const PodcastCard = ({ podcast, onLike }) => {
   const handlePlay = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      toast.error('Please login to play podcasts');
+      return;
+    }
+
     try {
       await api.put(`/podcasts/${podcast._id}/play`);
     } catch (err) {
@@ -95,12 +101,18 @@ const PodcastCard = ({ podcast, onLike }) => {
             }}
           />
           <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <button
-              onClick={handlePlay}
-              className="bg-white text-blue-600 p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300"
-            >
-              <FiPlay className="w-6 h-6" />
-            </button>
+            {canPlay ? (
+              <button
+                onClick={handlePlay}
+                className="bg-white text-blue-600 p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300"
+              >
+                <FiPlay className="w-6 h-6" />
+              </button>
+            ) : (
+              <Link to="/register" className="bg-white text-gray-400 p-4 rounded-full transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                <FiPlay className="w-6 h-6" />
+              </Link>
+            )}
           </div>
         </div>
 
