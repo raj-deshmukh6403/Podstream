@@ -86,6 +86,20 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
     return podcast.coverImage.url || podcast.coverImage || '/default-podcast-cover.jpg';
   };
 
+  // Helper function to get category name
+  const getCategoryName = (category) => {
+    if (!category) return '';
+    if (typeof category === 'string') return category;
+    return category.name || '';
+  };
+
+  // Helper function to get tag name
+  const getTagName = (tag) => {
+    if (!tag) return '';
+    if (typeof tag === 'string') return tag;
+    return tag.name || '';
+  };
+
   return (
     <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden">
       <Link to={`/podcast/${podcast._id}`} className="block">
@@ -126,13 +140,23 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
             </p>
           </div>
 
-          {/* Category */}
+          {/* Category and Tags */}
           <div className="flex flex-wrap gap-2 mb-2">
             {podcast.category && (
               <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
-                {typeof podcast.category === 'object' ? podcast.category.name : podcast.category}
+                {getCategoryName(podcast.category)}
               </span>
             )}
+            
+            {/* Display tags */}
+            {podcast.tags && podcast.tags.length > 0 && 
+              podcast.tags.map((tag, index) => (
+                <span key={index} className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-full">
+                  {getTagName(tag)}
+                </span>
+              ))
+            }
+            
             <span className="text-gray-400 text-xs">
               {moment(podcast.createdAt).fromNow()}
             </span>
