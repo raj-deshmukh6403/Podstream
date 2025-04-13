@@ -45,101 +45,101 @@ const getAuthHeader = () => {
 // Admin API endpoints with headers added
 export const adminApi = {
   addUser: (userData) => 
-    axios.post('/admin/users', userData, {
+    axios.post('https://podstreamb.vercel.app/api/admin/users', userData, {
       headers: getAuthHeader()
     }),
 
   getStats: () =>
-    axios.get('/admin/stats', {
+    axios.get('https://podstreamb.vercel.app/api/admin/stats', {
       headers: getAuthHeader()
     }),
 
   getUsers: (page = 1, search = '', role = '') =>
-    axios.get(`/admin/users?page=${page}&search=${search}&role=${role}`, {
+    axios.get(`https://podstreamb.vercel.app/api/admin/users?page=${page}&search=${search}&role=${role}`, {
       headers: getAuthHeader()
     }),
 
   getPodcasts: (page = 1, search = '', category = '') =>
-    axios.get(`/admin/podcasts?page=${page}&search=${search}&category=${category}`, {
+    axios.get(`https://podstreamb.vercel.app/api/admin/podcasts?page=${page}&search=${search}&category=${category}`, {
       headers: getAuthHeader()
     }),
 
   getCategories: () =>
-    axios.get('/admin/categories', {
+    axios.get('https://podstreamb.vercel.app/api/admin/categories', {
       headers: getAuthHeader()
     }),
 
   getTags: () =>
-    axios.get('/admin/tags', {
+    axios.get('https://podstreamb.vercel.app/api/admin/tags', {
       headers: getAuthHeader()
     }),
 
   deleteUser: (userId) =>
-    axios.delete(`/admin/users/${userId}`, {
+    axios.delete(`https://podstreamb.vercel.app/api/admin/users/${userId}`, {
       headers: getAuthHeader()
     }),
 
   updateUserRole: (userId, role) =>
-    axios.patch(`/admin/users/${userId}/role`, { role }, {
+    axios.patch(`https://podstreamb.vercel.app/api/admin/users/${userId}/role`, { role }, {
       headers: getAuthHeader()
     }),
 
   createCategory: (data) =>
-    axios.post('/admin/categories', data, {
+    axios.post('https://podstreamb.vercel.app/api/admin/categories', data, {
       headers: getAuthHeader()
     }),
 
   updateCategory: (id, data) =>
-    axios.put(`/admin/categories/${id}`, data, {
+    axios.put(`https://podstreamb.vercel.app/api/admin/categories/${id}`, data, {
       headers: getAuthHeader()
     }),
 
   deleteCategory: (id) =>
-    axios.delete(`/admin/categories/${id}`, {
+    axios.delete(`https://podstreamb.vercel.app/api/admin/categories/${id}`, {
       headers: getAuthHeader()
     }),
 
   createTag: (data) =>
-    axios.post('/admin/tags', data, {
+    axios.post('https://podstreamb.vercel.app/api/admin/tags', data, {
       headers: getAuthHeader()
     }),
 
   updateTag: (id, data) =>
-    axios.put(`/admin/tags/${id}`, data, {
+    axios.put(`https://podstreamb.vercel.app/api/admin/tags/${id}`, data, {
       headers: getAuthHeader()
     }),
 
   deleteTag: (id) =>
-    axios.delete(`/admin/tags/${id}`, {
+    axios.delete(`https://podstreamb.vercel.app/api/admin/tags/${id}`, {
       headers: getAuthHeader()
     }),
 
   deletePodcast: (podcastId) =>
-    axios.delete(`/admin/podcasts/${podcastId}`, {
+    axios.delete(`https://podstreamb.vercel.app/api/admin/podcasts/${podcastId}`, {
       headers: getAuthHeader()
     }),
 
   updatePodcastStatus: (podcastId, status) =>
-    axios.patch(`/admin/podcasts/${podcastId}/status`, { status }, {
+    axios.patch(`https://podstreamb.vercel.app/api/admin/podcasts/${podcastId}/status`, { status }, {
       headers: getAuthHeader()
     }),
   updatePodcast: (podcastId, podcastData) =>
-    axios.put(`/admin/podcasts/${podcastId}`, podcastData, {
+    axios.put(`https://podstreamb.vercel.app/api/admin/podcasts/${podcastId}`, podcastData, {
       headers: getAuthHeader()
     }),
 
   getAnalytics: (period = 'week') =>
-    axios.get(`/admin/analytics?period=${period}`, {
+    axios.get(`https://podstreamb.vercel.app/api/admin/analytics?period=${period}`, {
       headers: getAuthHeader()
     }),
 
   getReports: () =>
-    axios.get('/admin/reports', {
+    axios.get('https://podstreamb.vercel.app/api/admin/reports', {
       headers: getAuthHeader()
     }),
 
   generateReport: (type, format) =>
-    axios.post('/admin/reports/generate', { type, format }, {
+    axios.post('https://podstreamb.vercel.app/api/admin/reports/generate', { type, format }, {
       headers: getAuthHeader()
     })
 };
