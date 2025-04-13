@@ -16,7 +16,7 @@ const ForgotPassword = () => {
   const handleSendOtp = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('/api/auth/forgot-password', { email });
+      const res = await axios.post('https://podstreamf.vercel.app/api/auth/forgot-password', { email });
       console.log(res);
       
       toast.success(res.data.message);
@@ -31,7 +31,7 @@ const ForgotPassword = () => {
   const handleVerifyOtp = async () => {
     setLoading(true);
     try {
-      const res = await axios.post('/api/auth/verify-otp', { email, otp: otp.join('') });
+      const res = await axios.post('https://podstreamf.vercel.app/api/auth/verify-otp', { email, otp: otp.join('') });
       toast.success(res.data.message);
       setStep(3);
     } catch (err) {
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
     }
     setLoading(true);
     try {
-      const res = await axios.post('/api/auth/reset-password', {
+      const res = await axios.post('https://podstreamf.vercel.app/api/auth/reset-password', {
         email,
         otp: otp.join(''),
         password
