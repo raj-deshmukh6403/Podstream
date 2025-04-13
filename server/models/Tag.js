@@ -28,4 +28,16 @@ TagSchema.pre('save', function (next) {
   next();
 });
 
+// Also handle slug generation for findOneAndUpdate operations
+TagSchema.pre('findOneAndUpdate', function (next) {
+  const update = this.getUpdate();
+  if (update.name) {
+    update.slug = update.name
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '');
+  }
+  next();
+});
+
 module.exports = mongoose.model('Tag', TagSchema);

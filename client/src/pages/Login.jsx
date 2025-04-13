@@ -72,9 +72,11 @@ const Login = () => {
               left: `${Math.random() * 100}%`,
               width: `${Math.random() * 8 + 4}px`,
               height: `${Math.random() * 8 + 4}px`,
+              animationName: 'float-up',
               animationDuration: `${Math.random() * 10 + 15}s`,
               animationDelay: `${Math.random() * 5}s`,
-              animation: 'float-up infinite linear'
+              animationIterationCount: 'infinite',
+              animationTimingFunction: 'linear'
             }}
           />
         ))}

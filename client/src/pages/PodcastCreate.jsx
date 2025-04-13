@@ -3,21 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import api from "../utils/api";
-import axios from 'axios'
+import axios from 'axios';
 
 const PodcastCreate = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const token = localStorage.getItem('token');
-  // const [tags, setTags] = useState([]);
-  const [tagsText, setTagsText] = useState("");
+  
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
-    tags: [],
     audioFile: null,
     coverImage: null,
     seasons: 1,
@@ -44,13 +44,20 @@ const PodcastCreate = () => {
         const categoriesRes = await api.get("/categories");
         console.log("Categories response:", categoriesRes);
 
-        // const tagsRes = await api.get('/tags');
-        // console.log('Tags response:', tagsRes);
+        // Fetch tags from the API
+        const tagsRes = await api.get('/tags');
+        console.log('Tags response:', tagsRes);
 
         // Check if the responses have data property
         if (categoriesRes?.data?.data) {
           setCategories(categoriesRes.data.data);
-          // setTags(tagsRes.data.data);
+          
+          // Set tags if response has the right structure
+          if (tagsRes?.data?.data) {
+            setTags(tagsRes.data.data);
+          } else {
+            console.error("Invalid tags response format:", tagsRes);
+          }
         } else {
           console.error("Invalid response format:", { categoriesRes, tagsRes });
           throw new Error("Invalid response format from server");
@@ -88,12 +95,11 @@ const PodcastCreate = () => {
   };
 
   const handleTagToggle = (tagId) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.includes(tagId)
-        ? prev.tags.filter((id) => id !== tagId)
-        : [...prev.tags, tagId],
-    }));
+    setSelectedTags(prev => 
+      prev.includes(tagId)
+        ? prev.filter(id => id !== tagId)
+        : [...prev, tagId]
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -118,15 +124,11 @@ const PodcastCreate = () => {
         imageBase64 = await fileToBase64(formData.coverImage);
       }
   
-      const tagsArray = tagsText
-        .split(/[\s,]+/)
-        .filter(Boolean);
-  
       const podcastData = {
         title: formData.title,
         description: formData.description,
         category: formData.category,
-        tags: tagsArray,
+        tags: selectedTags, // Use the selected tags
         audioBase64,
         imageBase64,
         seasons: formData.seasons,
@@ -155,10 +157,9 @@ const PodcastCreate = () => {
           coverImage: null,
           seasons: 1,
           episode: 1,
-          tags: [],
         });
   
-        setTagsText("");
+        setSelectedTags([]);
         navigate("/dashboard"); // or wherever you want to redirect
       } else {
         toast.error("Unexpected response from the server");
@@ -172,9 +173,6 @@ const PodcastCreate = () => {
       setLoading(false);
     }
   };
-  
-  
-  
   
   // Helper function to convert file to base64
   const fileToBase64 = (file) => {
@@ -237,16 +235,32 @@ const PodcastCreate = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2">
-              Tags (comma or space separated)
-            </label>
-            <input
-              type="text"
-              value={tagsText}
-              onChange={(e) => setTagsText(e.target.value)}
-              placeholder="e.g., tech education music"
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <label className="block text-gray-700 mb-2">Tags</label>
+            <div className="flex flex-wrap gap-2 border border-gray-300 rounded-lg p-3">
+              {tags.length > 0 ? (
+                tags.map((tag) => (
+                  <div
+                    key={tag._id}
+                    onClick={() => handleTagToggle(tag._id)}
+                    className={`px-3 py-1 rounded-full cursor-pointer transition-colors duration-200 
+                      ${
+                        selectedTags.includes(tag._id)
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                  >
+                    {tag.name}
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-500 italic">Loading tags or no tags available...</p>
+              )}
+            </div>
+            {selectedTags.length > 0 && (
+              <p className="mt-2 text-sm text-gray-600">
+                {selectedTags.length} tag{selectedTags.length !== 1 ? 's' : ''} selected
+              </p>
+            )}
           </div>
 
           <div>
@@ -272,7 +286,7 @@ const PodcastCreate = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          {/* <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700 mb-2">Season</label>
               <input
@@ -296,7 +310,7 @@ const PodcastCreate = () => {
                 className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-          </div>
+          </div> */}
 
           <button
             type="submit"

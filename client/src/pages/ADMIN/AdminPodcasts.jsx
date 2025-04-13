@@ -1,42 +1,261 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Edit, Trash2, Eye, Play, Pause, CheckCircle, XCircle } from 'lucide-react';
+import { Play, Pause, Edit, Trash2, Search, Filter, Music, X } from 'lucide-react';
+import { adminApi } from '../../utils/api';
+import { toast } from 'react-toastify';
 
+// Edit Modal Component
+// Edit Modal Component
+const EditPodcastModal = ({ podcast, onClose, onSave, categories }) => {
+  const [formData, setFormData] = useState({
+    title: podcast.title || '',
+    description: podcast.description || '',
+    category: podcast.category?._id || '',
+    status: podcast.status || 'draft'
+  });
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState(podcast.tags?.map(tag => typeof tag === 'object' ? tag._id : tag) || []);
+  const [tagsLoading, setTagsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch tags from API
+    const fetchTags = async () => {
+      try {
+        setTagsLoading(true);
+        // Use the same API method as in other parts of your application
+        const response = await adminApi.getTags(); // You'll need to add this method to your adminApi
+        
+        // Make sure we're properly extracting the tags data
+        const tagsData = Array.isArray(response.data) 
+          ? response.data 
+          : (response.data?.data || []);
+        
+        setTags(tagsData);
+      } catch (error) {
+        console.error('Error fetching tags:', error);
+        toast.error('Failed to fetch tags');
+      } finally {
+        setTagsLoading(false);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleTagToggle = (tagId) => {
+    setSelectedTags(prev => 
+      prev.includes(tagId)
+        ? prev.filter(id => id !== tagId)
+        : [...prev, tagId]
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    const formattedData = {
+      ...formData,
+      tags: selectedTags
+    };
+    
+    try {
+      await onSave(podcast._id, formattedData);
+      onClose();
+    } catch (error) {
+      console.error('Error saving podcast:', error);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Edit Podcast</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <X size={24} />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="4"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              ></textarea>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Select Category</option>
+                {categories.map(category => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                {/* <option value="archived">Archived</option> */}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+              <div className="flex flex-wrap gap-2 border border-gray-300 rounded-md p-3">
+                {tagsLoading ? (
+                  <p className="text-gray-500 italic">Loading tags...</p>
+                ) : tags.length > 0 ? (
+                  tags.map((tag) => (
+                    <div
+                      key={tag._id}
+                      onClick={() => handleTagToggle(tag._id)}
+                      className={`px-3 py-1 rounded-full cursor-pointer transition-colors duration-200 
+                        ${
+                          selectedTags.includes(tag._id)
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                    >
+                      {tag.name}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 italic">No tags available</p>
+                )}
+              </div>
+              {selectedTags.length > 0 && (
+                <p className="mt-2 text-sm text-gray-600">
+                  {selectedTags.length} tag{selectedTags.length !== 1 ? 's' : ''} selected
+                </p>
+              )}
+            </div>
+          </div>
+          
+          <div className="mt-6 flex justify-end space-x-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Main Component
 const AdminPodcasts = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('all');
+  const [tags, setTags] = useState([]); // Add this line
+  const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [playingId, setPlayingId] = useState(null);
-  const audioRef = React.useRef(null);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [editingPodcast, setEditingPodcast] = useState(null);
+
+
+  const fetchTags = async () => {
+    try {
+      const response = await adminApi.getTags();
+      const tagsData = Array.isArray(response.data) 
+        ? response.data 
+        : (response.data?.data || []);
+      setTags(tagsData);
+    } catch (err) {
+      console.error('Error fetching tags:', err);
+      toast.error('Failed to fetch tags');
+      setTags([]);
+    }
+  };
+
+  useEffect(() => {
+    // Load categories and tags first, then fetch podcasts
+    Promise.all([fetchCategories(), fetchTags()])
+      .then(() => {
+        fetchPodcasts();
+      });
+  }, []);
+
+  const findTagName = (tagId) => {
+    const tag = tags.find(t => t._id === tagId);
+    return tag ? tag.name : tagId;
+  };
+
+  useEffect(() => {
+    // Load categories first, then fetch podcasts
+    fetchCategories().then(() => {
+      fetchPodcasts();
+    });
+  }, []);
 
   useEffect(() => {
     fetchPodcasts();
-    fetchCategories();
-  }, [currentPage, searchTerm, categoryFilter, statusFilter]);
+  }, [currentPage, filterCategory]);
 
   const fetchPodcasts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `/api/admin/podcasts?page=${currentPage}&search=${searchTerm}&category=${categoryFilter}&status=${statusFilter}`,
-        {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setPodcasts(data.podcasts);
-        setTotalPages(data.totalPages);
-      }
-    } catch (error) {
-      console.error('Error fetching podcasts:', error);
+      setError(null);
+      const response = await adminApi.getPodcasts(currentPage, searchTerm, filterCategory);
+      setPodcasts(response.data?.data || []);
+      setTotalPages(Math.ceil((response.data?.total || 0) / 10));
+    } catch (err) {
+      console.error('Error fetching podcasts:', err);
+      setError(err.message || 'Failed to fetch podcasts');
+      toast.error(err.message || 'Failed to fetch podcasts');
+      setPodcasts([]);
     } finally {
       setLoading(false);
     }
@@ -44,276 +263,344 @@ const AdminPodcasts = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
+      setCategoriesLoading(true);
+      const response = await adminApi.getCategories();
+      
+      // Make sure we're properly extracting the categories data
+      const categoriesData = Array.isArray(response.data) 
+        ? response.data 
+        : (response.data?.data || []);
+      
+      setCategories(categoriesData);
+    } catch (err) {
+      console.error('Error fetching categories:', err);
+      toast.error('Failed to fetch categories');
+      setCategories([]);
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
 
-      if (response.ok) {
-        const data = await response.json();
-        setCategories(data);
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error);
+  const handleDelete = async (podcastId) => {
+    if (!window.confirm('Are you sure you want to delete this podcast?')) return;
+    
+    try {
+      await adminApi.deletePodcast(podcastId);
+      toast.success('Podcast deleted successfully');
+      fetchPodcasts();
+    } catch (err) {
+      console.error('Error deleting podcast:', err);
+      toast.error(err.message || 'Failed to delete podcast');
     }
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
+    setSearchTerm(e.target.value);
     setCurrentPage(1);
-    fetchPodcasts();
   };
 
-  const handleDeletePodcast = async (podcastId) => {
-    if (window.confirm('Are you sure you want to delete this podcast? This action cannot be undone.')) {
-      try {
-        const response = await fetch(`/api/admin/podcasts/${podcastId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-
-        if (response.ok) {
-          // Remove podcast from state
-          setPodcasts(podcasts.filter(podcast => podcast._id !== podcastId));
-        }
-      } catch (error) {
-        console.error('Error deleting podcast:', error);
-      }
-    }
+  const handleCategoryFilter = (e) => {
+    setFilterCategory(e.target.value);
+    setCurrentPage(1);
   };
 
-  const handleToggleApproval = async (podcastId, currentStatus) => {
+  const handleEdit = (podcast) => {
+    setEditingPodcast(podcast);
+  };
+
+  const handleSavePodcast = async (podcastId, formData) => {
     try {
-      const newStatus = currentStatus === 'approved' ? 'pending' : 'approved';
+      // Update status
+      await adminApi.updatePodcastStatus(podcastId, formData.status);
       
-      const response = await fetch(`/api/admin/podcasts/${podcastId}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ status: newStatus })
+      // You'll need to add the updatePodcast API method to handle tags
+      // Example implementation:
+      await adminApi.updatePodcast(podcastId, {
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        tags: formData.tags // Now an array of tag IDs
       });
-
-      if (response.ok) {
-        // Update podcast status in state
-        const updatedPodcasts = podcasts.map(podcast => 
-          podcast._id === podcastId ? { ...podcast, status: newStatus } : podcast
-        );
-        setPodcasts(updatedPodcasts);
-      }
-    } catch (error) {
-      console.error('Error updating podcast status:', error);
-    }
-  };
-
-  const togglePlayPause = (podcast) => {
-    if (playingId === podcast._id) {
-      // Already playing this podcast - pause it
-      audioRef.current.pause();
-      setPlayingId(null);
-    } else {
-      // Play a new podcast
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-      audioRef.current = new Audio(podcast.audioUrl);
-      audioRef.current.play();
-      setPlayingId(podcast._id);
       
-      // Add event listener for when audio ends
-      audioRef.current.onended = () => {
-        setPlayingId(null);
-      };
+      toast.success('Podcast updated successfully');
+      fetchPodcasts();
+    } catch (err) {
+      console.error('Error updating podcast:', err);
+      toast.error(err.message || 'Failed to update podcast');
+      throw err;
     }
   };
-
   const formatDuration = (seconds) => {
+    if (!seconds) return 'N/A';
+    
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+    
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      fetchPodcasts();
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm]);
+
+  if (loading && categories.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-        <h1 className="text-2xl font-bold">Podcast Management</h1>
-        
-        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-          <div className="relative flex-grow">
-            <input
-              type="text"
-              placeholder="Search podcasts..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <Search size={18} className="absolute left-3 top-2.5 text-gray-400" />
-          </div>
-          
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">All Categories</option>
-            {categories.map(category => (
-              <option key={category._id} value={category._id}>{category.name}</option>
-            ))}
-          </select>
-          
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-2 px-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">All Status</option>
-            <option value="approved">Approved</option>
-            <option value="pending">Pending</option>
-            <option value="rejected">Rejected</option>
-          </select>
-          
-          <button 
-            type="submit" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Search
-          </button>
-        </form>
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Podcasts Management</h1>
       </div>
 
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="mb-6 flex flex-wrap gap-4">
+        <div className="relative flex-1 min-w-[300px]">
+          <input
+            type="text"
+            placeholder="Search podcasts..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
         </div>
-      ) : (
-        <>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
-              <thead className="bg-gray-100">
+
+        <div className="flex gap-4">
+          <select
+            value={filterCategory}
+            onChange={handleCategoryFilter}
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={categoriesLoading}
+          >
+            <option value="all">All Categories</option>
+            {categories && categories.length > 0 ? (
+              categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))
+            ) : (
+              <option disabled>Loading categories...</option>
+            )}
+          </select>
+        </div>
+      </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
+
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Creator
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Duration
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tags
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Plays
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {loading ? (
                 <tr>
-                  <th className="py-3 px-4 text-left">Podcast</th>
-                  <th className="py-3 px-4 text-left">Creator</th>
-                  <th className="py-3 px-4 text-left">Category</th>
-                  <th className="py-3 px-4 text-left">Duration</th>
-                  <th className="py-3 px-4 text-left">Status</th>
-                  <th className="py-3 px-4 text-left">Uploaded</th>
-                  <th className="py-3 px-4 text-left">Listens</th>
-                  <th className="py-3 px-4 text-left">Actions</th>
+                  <td colSpan="8" className="px-6 py-4 text-center">
+                    <div className="flex justify-center items-center">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+                      <span className="ml-2">Loading podcasts...</span>
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {podcasts.map(podcast => (
+              ) : Array.isArray(podcasts) && podcasts.length > 0 ? (
+                podcasts.map((podcast) => (
                   <tr key={podcast._id} className="hover:bg-gray-50">
-                    <td className="py-3 px-4">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="w-12 h-12 rounded bg-gray-200 flex items-center justify-center mr-3 overflow-hidden">
-                          {podcast.coverImage ? (
-                            <img 
-                              src={podcast.coverImage} 
-                              alt={podcast.title} 
-                              className="w-12 h-12 object-cover"
+                        <div className="h-12 w-12 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
+                          {podcast.coverImage?.url ? (
+                            <img
+                              src={podcast.coverImage.url}
+                              alt={podcast.title}
+                              className="h-12 w-12 object-cover"
+                              onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2U1ZTdlYiI+PHBhdGggZD0iTTEyIDJjNS41MiAwIDEwIDQuNDggMTAgMTBzLTQuNDggMTAtMTAgMTAtMTAtNC40OC0xMC0xMCA0LjQ4LTEwIDEwLTEwek0xMCA3djEwbDYtNXoiLz48L3N2Zz4=';
+                              }}
                             />
                           ) : (
-                            <Headphones size={24} className="text-gray-500" />
+                            <div className="h-12 w-12 flex items-center justify-center">
+                              <Music className="h-6 w-6 text-gray-400" />
+                            </div>
                           )}
                         </div>
-                        <div>
-                          <div className="font-medium">{podcast.title}</div>
-                          <div className="text-sm text-gray-500 truncate max-w-xs">
-                            {podcast.description.substring(0, 60)}...
+                        <div className="ml-4 max-w-xs">
+                          <div className="text-sm font-medium text-gray-900 truncate">
+                            {podcast.title}
+                          </div>
+                          <div className="text-xs text-gray-500 truncate">
+                            {new Date(podcast.createdAt).toLocaleDateString()}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4">{podcast.user?.name || 'Unknown'}</td>
-                    <td className="py-3 px-4">
-                      <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                        {podcast.category?.name || 'Uncategorized'}
-                      </span>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{podcast.creator?.username || 'N/A'}</div>
                     </td>
-                    <td className="py-3 px-4">{formatDuration(podcast.duration)}</td>
-                    <td className="py-3 px-4">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        podcast.status === 'approved' ? 'bg-green-100 text-green-800' : 
-                        podcast.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                        'bg-yellow-100 text-yellow-800'
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{podcast.category?.name || 'N/A'}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {formatDuration(podcast.audioFile?.duration)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1 max-w-xs">
+                        {podcast.tags && podcast.tags.length > 0 ? (
+                          podcast.tags.map((tag, index) => (
+                            <span 
+                              key={index} 
+                              className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full"
+                            >
+                              {typeof tag === 'object' ? tag.name : findTagName(tag)}
+                            </span>
+                          ))
+                        ) : (
+                          <span className="text-sm text-gray-500">No tags</span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{podcast.plays || 0}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        podcast.isPublished  // Use isPublished instead of status
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
                       }`}>
-                        {podcast.status}
+                        {podcast.isPublished ? 'published' : 'draft'}
                       </span>
                     </td>
-                    <td className="py-3 px-4">
-                      {new Date(podcast.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="py-3 px-4">{podcast.listens || 0}</td>
-                    <td className="py-3 px-4">
-                      <div className="flex space-x-2">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex items-center space-x-3">
                         <button
-                          onClick={() => togglePlayPause(podcast)}
-                          className="p-1 text-blue-500 hover:bg-blue-100 rounded-full"
-                          title={playingId === podcast._id ? "Pause" : "Play"}
+                          onClick={() => handleEdit(podcast)}
+                          className="text-blue-600 hover:text-blue-900"
+                          title="Edit podcast"
                         >
-                          {playingId === podcast._id ? <Pause size={18} /> : <Play size={18} />}
+                          <Edit size={18} />
                         </button>
                         <button
-                          onClick={() => handleToggleApproval(podcast._id, podcast.status)}
-                          className={`p-1 rounded-full ${
-                            podcast.status === 'approved' ? 'text-red-500 hover:bg-red-100' : 'text-green-500 hover:bg-green-100'
-                          }`}
-                          title={podcast.status === 'approved' ? 'Unapprove' : 'Approve'}
-                        >
-                          {podcast.status === 'approved' ? <XCircle size={18} /> : <CheckCircle size={18} />}
-                        </button>
-                        <a
-                          href={`/podcasts/${podcast._id}`}
-                          className="p-1 text-green-500 hover:bg-green-100 rounded-full"
-                          title="View Podcast"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <Eye size={18} />
-                        </a>
-                        <button
-                          onClick={() => handleDeletePodcast(podcast._id)}
-                          className="p-1 text-red-500 hover:bg-red-100 rounded-full"
-                          title="Delete Podcast"
+                          onClick={() => handleDelete(podcast._id)}
+                          className="text-red-600 hover:text-red-900"
+                          title="Delete podcast"
                         >
                           <Trash2 size={18} />
                         </button>
                       </div>
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" className="px-6 py-4 text-center text-gray-500">
+                    No podcasts found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
-          {/* Pagination */}
-          <div className="flex justify-between items-center mt-6">
-            <p className="text-sm text-gray-500">
-              Showing {podcasts.length} podcasts of page {currentPage} of {totalPages}
-            </p>
-            <div className="flex space-x-2">
+        {totalPages > 1 && (
+          <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+            <div className="flex-1 flex justify-between sm:hidden">
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 rounded border enabled:hover:bg-gray-100 disabled:opacity-50"
+                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
               >
                 Previous
               </button>
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 rounded border enabled:hover:bg-gray-100 disabled:opacity-50"
+                className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
               >
                 Next
               </button>
             </div>
+            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm text-gray-700">
+                  Showing page <span className="font-medium">{currentPage}</span> of{' '}
+                  <span className="font-medium">{totalPages}</span>
+                </p>
+              </div>
+              <div>
+                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium
+                        ${currentPage === i + 1
+                          ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                          : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                        }
+                        ${i === 0 ? 'rounded-l-md' : ''}
+                        ${i === totalPages - 1 ? 'rounded-r-md' : ''}
+                      `}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </nav>
+              </div>
+            </div>
           </div>
-        </>
+        )}
+      </div>
+
+      {/* Edit Podcast Modal */}
+      {editingPodcast && (
+        <EditPodcastModal
+          podcast={editingPodcast}
+          onClose={() => setEditingPodcast(null)}
+          onSave={handleSavePodcast}
+          categories={categories}
+        />
       )}
     </div>
   );

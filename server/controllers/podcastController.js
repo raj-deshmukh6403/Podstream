@@ -248,7 +248,9 @@ exports.updatePodcast = async (req, res, next) => {
       req.body.audioFile = {
         url: audioResult.secure_url,
         publicId: audioResult.public_id,
-        duration: audioResult.duration
+        duration: audioResult.duration,
+        audioPublicId: audioUpload.public_id,
+
       };
 
       // Remove base64 from request body
@@ -268,7 +270,8 @@ exports.updatePodcast = async (req, res, next) => {
 
       req.body.coverImage = {
         url: imageResult.secure_url,
-        publicId: imageResult.public_id
+        publicId: imageResult.public_id,
+        thumbnailPublicId: thumbnailUpload.public_id
       };
 
       // Remove base64 from request body

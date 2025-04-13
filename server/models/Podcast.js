@@ -64,7 +64,9 @@ const PodcastSchema = new mongoose.Schema(
     plays: {
       type: Number,
       default: 0
-    }
+    },
+    audioPublicId: String,
+    thumbnailPublicId: String
   },
   {
     timestamps: true,

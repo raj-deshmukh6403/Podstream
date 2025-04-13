@@ -1,47 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Filter, Calendar, ArrowDown, Search, RefreshCw } from 'lucide-react';
+import { Download, FileText, Filter, Search } from 'lucide-react';
 
 const AdminReports = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedReportType, setSelectedReportType] = useState('all');
-  const [dateRange, setDateRange] = useState({
-    startDate: '',
-    endDate: ''
-  });
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedType, setSelectedType] = useState('all');
+  const [selectedFormat, setSelectedFormat] = useState('all');
   const [generatingReport, setGeneratingReport] = useState(false);
-
-  const fetchReports = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/admin/reports', {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setReports(data);
-        setError(null);
-      } else {
-        setError('Failed to fetch reports');
-      }
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
     fetchReports();
   }, []);
 
-  const generateReport = async (type) => {
+  const fetchReports = async () => {
+    try {
+      const response = await fetch('/api/admin/reports', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch reports');
+      }
+
+      const { data } = await response.json();
+      setReports(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateReport = async (type, format) => {
     setGeneratingReport(true);
     try {
       const response = await fetch('/api/admin/reports/generate', {
@@ -50,104 +45,33 @@ const AdminReports = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({
-          type,
-          startDate: dateRange.startDate,
-          endDate: dateRange.endDate
-        })
+        body: JSON.stringify({ type, format })
       });
-      
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${type}-report-${new Date().toISOString().split('T')[0]}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      } else {
-        setError('Failed to generate report');
+
+      if (!response.ok) {
+        throw new Error('Failed to generate report');
       }
-    } catch (error) {
-      setError(error.message);
+
+      const { reportId } = await response.json();
+      // Refresh reports list after generation
+      fetchReports();
+    } catch (err) {
+      setError(err.message);
     } finally {
       setGeneratingReport(false);
     }
   };
 
-  // Mock report data for display purposes
-  const mockReports = [
-    {
-      id: 1,
-      name: 'Monthly User Growth Report',
-      type: 'user',
-      format: 'PDF',
-      createdAt: '2025-03-15T10:30:00',
-      createdBy: 'System',
-      downloads: 12,
-      status: 'Ready'
-    },
-    {
-      id: 2,
-      name: 'Q1 Podcast Performance',
-      type: 'content',
-      format: 'XLSX',
-      createdAt: '2025-03-10T14:45:00',
-      createdBy: 'Admin',
-      downloads: 8,
-      status: 'Ready'
-    },
-    {
-      id: 3,
-      name: 'Weekly Engagement Metrics',
-      type: 'engagement',
-      format: 'PDF',
-      createdAt: '2025-04-01T09:15:00',
-      createdBy: 'System',
-      downloads: 5,
-      status: 'Ready'
-    },
-    {
-      id: 4,
-      name: 'Revenue Analysis Q1 2025',
-      type: 'financial',
-      format: 'XLSX',
-      createdAt: '2025-04-02T11:00:00',
-      createdBy: 'Admin',
-      downloads: 7,
-      status: 'Ready'
-    },
-    {
-      id: 5,
-      name: 'Content Category Distribution',
-      type: 'content',
-      format: 'PDF',
-      createdAt: '2025-03-28T16:20:00',
-      createdBy: 'System',
-      downloads: 3,
-      status: 'Ready'
-    }
-  ];
-
-  const filteredReports = mockReports.filter(report => {
-    let matchesType = selectedReportType === 'all' || report.type === selectedReportType;
-    let matchesSearch = report.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesType && matchesSearch;
-  });
-
-  const reportTypes = [
-    { id: 'all', name: 'All Reports' },
-    { id: 'user', name: 'User Reports' },
-    { id: 'content', name: 'Content Reports' },
-    { id: 'engagement', name: 'Engagement Reports' },
-    { id: 'financial', name: 'Financial Reports' }
-  ];
-
-  const handleDownload = (reportId) => {
-    generateReport(reportId);
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
   };
+
+  const filteredReports = reports.filter(report => {
+    const matchesSearch = report.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = selectedType === 'all' || report.type === selectedType;
+    const matchesFormat = selectedFormat === 'all' || report.format === selectedFormat;
+    return matchesSearch && matchesType && matchesFormat;
+  });
 
   if (loading) {
     return (
@@ -158,167 +82,119 @@ const AdminReports = () => {
   }
 
   return (
-    <div>
+    <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Reports</h1>
-        <div className="flex gap-3">
-          <button 
-            onClick={() => generateReport('userGrowth')}
-            className="flex items-center gap-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-            disabled={generatingReport}
-          >
-            {generatingReport ? <RefreshCw size={16} className="animate-spin" /> : <Download size={16} />}
-            Generate Report
-          </button>
-        </div>
+        <h1 className="text-3xl font-bold">Reports Management</h1>
+        <button
+          onClick={() => generateReport('usage', 'csv')}
+          disabled={generatingReport}
+          className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50"
+        >
+          <FileText size={20} />
+          {generatingReport ? 'Generating...' : 'Generate New Report'}
+        </button>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 className="text-xl font-semibold mb-4">Report Generator</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
-            <select 
-              className="w-full border border-gray-300 rounded-md p-2"
-              onChange={(e) => setSelectedReportType(e.target.value)}
-              value={selectedReportType}
-            >
-              {reportTypes.map(type => (
-                <option key={type.id} value={type.id}>{type.name}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
-            <input 
-              type="date" 
-              className="w-full border border-gray-300 rounded-md p-2"
-              value={dateRange.startDate}
-              onChange={(e) => setDateRange({...dateRange, startDate: e.target.value})}
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
-            <input 
-              type="date" 
-              className="w-full border border-gray-300 rounded-md p-2"
-              value={dateRange.endDate}
-              onChange={(e) => setDateRange({...dateRange, endDate: e.target.value})}
-            />
-          </div>
+      <div className="mb-6 flex flex-wrap gap-4">
+        <div className="relative flex-1 min-w-[300px]">
+          <input
+            type="text"
+            placeholder="Search reports..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
         </div>
-        
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-end">
-          <div className="w-full md:w-1/2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Report Format</label>
-            <div className="flex gap-4">
-              <label className="inline-flex items-center">
-                <input type="radio" name="format" value="pdf" className="form-radio" defaultChecked />
-                <span className="ml-2">PDF</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input type="radio" name="format" value="xlsx" className="form-radio" />
-                <span className="ml-2">Excel</span>
-              </label>
-              <label className="inline-flex items-center">
-                <input type="radio" name="format" value="csv" className="form-radio" />
-                <span className="ml-2">CSV</span>
-              </label>
-            </div>
-          </div>
-          
-          <button 
-            className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-            onClick={() => generateReport(selectedReportType)}
-            disabled={generatingReport}
+
+        <div className="flex gap-4">
+          <select
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            {generatingReport ? 'Generating...' : 'Generate Report'}
-          </button>
+            <option value="all">All Types</option>
+            <option value="usage">Usage</option>
+            <option value="analytics">Analytics</option>
+            <option value="financial">Financial</option>
+          </select>
+
+          <select
+            value={selectedFormat}
+            onChange={(e) => setSelectedFormat(e.target.value)}
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="all">All Formats</option>
+            <option value="csv">CSV</option>
+            <option value="pdf">PDF</option>
+            <option value="excel">Excel</option>
+          </select>
         </div>
       </div>
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          Error: {error}
+          {error}
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-md">
-        <div className="p-4 border-b flex justify-between items-center">
-          <h2 className="text-lg font-semibold">Available Reports</h2>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search reports..."
-              className="border border-gray-300 rounded-md pl-8 py-1 px-3"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search size={16} className="absolute left-2 top-2 text-gray-400" />
-          </div>
-        </div>
-        
+      <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Format</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Created</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created By</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Downloads</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Report Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Type
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Format
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Date Created
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Created By
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredReports.map((report) => (
-                <tr key={report.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">{report.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap capitalize">{report.type}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{report.format}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{new Date(report.createdAt).toLocaleString()}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{report.createdBy}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{report.downloads}</td>
+                <tr key={report.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <button 
-                      className="text-indigo-600 hover:text-indigo-900 mr-3"
-                      onClick={() => handleDownload(report.id)}
+                    <div className="text-sm font-medium text-gray-900">{report.name}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">{report.type}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500 uppercase">{report.format}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">
+                      {new Date(report.dateCreated).toLocaleDateString()}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-500">{report.createdBy}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      className="text-indigo-600 hover:text-indigo-900"
+                      onClick={() => window.open(report.downloads, '_blank')}
                     >
                       <Download size={18} />
                     </button>
                   </td>
                 </tr>
               ))}
-              
-              {filteredReports.length === 0 && (
-                <tr>
-                  <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
-                    No reports found matching your criteria
-                  </td>
-                </tr>
-              )}
             </tbody>
           </table>
-        </div>
-        
-        <div className="px-6 py-4 flex items-center justify-between border-t">
-          <div className="text-sm text-gray-500">
-            Showing {filteredReports.length} of {mockReports.length} reports
-          </div>
-          <div className="flex gap-2">
-            <button className="px-3 py-1 border rounded text-sm disabled:opacity-50">
-              Previous
-            </button>
-            <button className="px-3 py-1 border rounded bg-indigo-50 text-indigo-600 font-medium text-sm">
-              1
-            </button>
-            <button className="px-3 py-1 border rounded text-sm disabled:opacity-50">
-              Next
-            </button>
-          </div>
         </div>
       </div>
     </div>

@@ -22,8 +22,9 @@ export default function Layout() {
   const navLinks = [
     { path: '/', icon: <FiHome className="w-5 h-5" />, label: 'Home' },
     ...(isAuthenticated
-      ? user?.role === 'user'
+      ? user?.role === 'admin'
         ? [
+            { path: '/admin', icon: <FiSettings className="w-5 h-5" />, label: 'Admin' },
             { path: '/profile', icon: <FiUser className="w-5 h-5" />, label: 'Profile' }
           ]
         : [
@@ -31,10 +32,6 @@ export default function Layout() {
             { path: '/podcast/create', icon: <FiUpload className="w-5 h-5" />, label: 'Create' },
             { path: '/profile', icon: <FiUser className="w-5 h-5" />, label: 'Profile' }
           ]
-      : []
-    ),
-    ...(isAdmin
-      ? [{ path: '/admin', icon: <FiSettings className="w-5 h-5" />, label: 'Admin' }]
       : []
     )
   ];
@@ -187,8 +184,15 @@ export default function Layout() {
               <h3 className="font-semibold text-gray-900 mb-4">Quick Links</h3>
               <ul className="space-y-2">
                 <li><Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link></li>
-                <li><Link to="/dashboard" className="text-gray-600 hover:text-blue-600">Dashboard</Link></li>
-                <li><Link to="/podcast/create" className="text-gray-600 hover:text-blue-600">Create Podcast</Link></li>
+                {user?.role === 'admin' ? (
+                  <li><Link to="/admin" className="text-gray-600 hover:text-blue-600">Admin Panel</Link></li>
+                ) : (
+                  <>
+                    <li><Link to="/dashboard" className="text-gray-600 hover:text-blue-600">Dashboard</Link></li>
+                    <li><Link to="/podcast/create" className="text-gray-600 hover:text-blue-600">Create Podcast</Link></li>
+                  </>
+                )}
+                <li><Link to="/profile" className="text-gray-600 hover:text-blue-600">Profile</Link></li>
               </ul>
             </div>
             <div>
