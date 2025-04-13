@@ -50,6 +50,10 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
 });
 
+app.get('/', (req,res) => {
+  res.send('Server is Running');
+})
+
 // Error handling middleware
 app.use(errorHandler);
 
