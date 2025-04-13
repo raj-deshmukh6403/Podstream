@@ -136,7 +136,7 @@ const PodcastCreate = () => {
       };
   
       const response = await axios.post(
-        'http://localhost:5000/api/podcasts',
+        'https://podstreamb.vercel.app/api/podcasts',
         podcastData,
         {
           headers: {

@@ -13,7 +13,7 @@ const DashboardStats = () => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/podcasts/stats', {
+        const response = await axios.get('https://podstreamb.vercel.app/api/podcasts/stats', {
           headers: { Authorization: `Bearer ${token}` }
         });
         

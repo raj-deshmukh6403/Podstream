@@ -46,8 +46,8 @@ const Profile = () => {
         const currentUserId = currentUser?._id;
         
         const endpoint = userId && userId !== currentUserId 
-          ? `http://localhost:5000/api/auth/${userId}`
-          : 'http://localhost:5000/api/auth/me';
+          ? `https://podstreamb.vercel.app/api/auth/${userId}`
+          : 'https://podstreamb.vercel.app/api/auth/me';
         
         setIsOwnProfile(!userId || userId === currentUserId);
         
@@ -145,7 +145,7 @@ const Profile = () => {
           }
         };
         
-        const response = await axios.put('http://localhost:5000/api/auth/profile/image', formDataToUpload, config);
+        const response = await axios.put('https://podstreamb.vercel.app/api/auth/profile/image', formDataToUpload, config);
         
         if (response.data) {
           setAlert({
@@ -201,7 +201,7 @@ const Profile = () => {
         notificationPreferences: formData.notificationPreferences
       };
       
-      const res = await axios.put('http://localhost:5000/api/auth/profile', updateData, config);
+      const res = await axios.put('https://podstreamb.vercel.app/api/auth/profile', updateData, config);
       
       if (res.data) {
         const userData = res.data.data || res.data;
@@ -249,7 +249,7 @@ const Profile = () => {
       };
       
       await axios.put(
-        'http://localhost:5000/api/auth/password',
+        'https://podstreamb.vercel.app/api/auth/password',
         {
           currentPassword: formData.currentPassword,
           newPassword: formData.newPassword

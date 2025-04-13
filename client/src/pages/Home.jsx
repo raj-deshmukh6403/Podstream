@@ -20,7 +20,7 @@ const Home = () => {
     const fetchPodcasts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/podcasts');
+        const response = await axios.get('https://podstreamb.vercel.app/api/podcasts');
         console.log('API Response:', response.data); 
         
         if (response.data && response.data.success) {
