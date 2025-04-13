@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   Home, Users, Headphones, Tag, BarChart2, 
   FileText, LogOut, ChevronLeft, ChevronRight, List, Grid 
@@ -8,6 +8,22 @@ import { useAuth } from '../../context/AuthContext';
 
 const AdminSidebar = ({ isOpen, toggleSidebar }) => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+  
+  const navItems = [
+    { path: '/admin/dashboard', icon: <Home size={20} />, label: 'Overview' },
+    { path: '/admin/users', icon: <Users size={20} />, label: 'Users' },
+    { path: '/admin/podcasts', icon: <Headphones size={20} />, label: 'Podcasts' },
+    { path: '/admin/categories', icon: <Grid size={20} />, label: 'Categories' },
+    { path: '/admin/tags', icon: <Tag size={20} />, label: 'Tags' },
+    { path: '/admin/analytics', icon: <BarChart2 size={20} />, label: 'Analytics' },
+    { path: '/admin/reports', icon: <FileText size={20} />, label: 'Reports' },
+  ];
   
   return (
     <div 
@@ -24,89 +40,30 @@ const AdminSidebar = ({ isOpen, toggleSidebar }) => {
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
         </button>
       </div>
-      
+
       <nav className="mt-6">
-        <NavLink 
-          to="/admin" 
-          end
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
-        >
-          <Home size={20} />
-          {isOpen && <span className="ml-4">Dashboard</span>}
-        </NavLink>
+        {navItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) => `
+              flex items-center px-4 py-3 transition-colors
+              ${isActive ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}
+            `}
+          >
+            <span className="inline-flex">{item.icon}</span>
+            {isOpen && <span className="ml-3">{item.label}</span>}
+          </NavLink>
+        ))}
         
-        <NavLink 
-          to="/admin/users" 
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center px-4 py-3 text-red-400 hover:bg-gray-800 hover:text-red-300 transition-colors"
         >
-          <Users size={20} />
-          {isOpen && <span className="ml-4">Users</span>}
-        </NavLink>
-        
-        <NavLink 
-          to="/admin/podcasts" 
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
-        >
-          <Headphones size={20} />
-          {isOpen && <span className="ml-4">Podcasts</span>}
-        </NavLink>
-        
-        <NavLink 
-          to="/admin/categories" 
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
-        >
-          <Grid size={20} />
-          {isOpen && <span className="ml-4">Categories</span>}
-        </NavLink>
-        
-        <NavLink 
-          to="/admin/tags" 
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
-        >
-          <Tag size={20} />
-          {isOpen && <span className="ml-4">Tags</span>}
-        </NavLink>
-        
-        <NavLink 
-          to="/admin/analytics" 
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
-        >
-          <BarChart2 size={20} />
-          {isOpen && <span className="ml-4">Analytics</span>}
-        </NavLink>
-        
-        <NavLink 
-          to="/admin/reports" 
-          className={({ isActive }) => 
-            `flex items-center p-4 ${isActive ? 'bg-blue-600' : 'hover:bg-gray-700'}`
-          }
-        >
-          <FileText size={20} />
-          {isOpen && <span className="ml-4">Reports</span>}
-        </NavLink>
+          <span className="inline-flex"><LogOut size={20} /></span>
+          {isOpen && <span className="ml-3">Logout</span>}
+        </button>
       </nav>
-      
-      <div className="absolute bottom-0 w-full border-t border-gray-700">
-        <button 
-          onClick={logout}
-          className="flex items-center p-4 w-full hover:bg-gray-700"
-        >
-          <LogOut size={20} />
-          {isOpen && <span className="ml-4">Logout</span>}
-        </button>   
-      </div>
     </div>
   );
 };
