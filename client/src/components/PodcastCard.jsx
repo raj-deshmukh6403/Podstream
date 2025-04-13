@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPlay, FiUser, FiClock, FiHeadphones } from 'react-icons/fi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
@@ -11,7 +11,36 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
   const { user } = useAuth();
   const [isLiking, setIsLiking] = useState(false);
   const [likes, setLikes] = useState(podcast.likes || []);
-  const isLiked = user && likes.includes(user._id);
+  const [isLiked, setIsLiked] = useState(user && likes.includes(user._id));
+  const [tagData, setTagData] = useState([]);
+  const [isLoadingTags, setIsLoadingTags] = useState(false);
+
+  useEffect(() => {
+    // Check if podcast.tags contains any IDs that need to be fetched
+    const hasTagIds = podcast.tags && podcast.tags.some(tag => typeof tag === 'string');
+    
+    if (hasTagIds) {
+      fetchTagData();
+    }
+  }, [podcast.tags]);
+
+  // Fetch tag data if needed
+  const fetchTagData = async () => {
+    if (!podcast.tags || podcast.tags.length === 0) return;
+    
+    try {
+      setIsLoadingTags(true);
+      const response = await api.get('/tags');
+      if (response.data && (response.data.data || response.data)) {
+        const tagsData = Array.isArray(response.data) ? response.data : response.data.data;
+        setTagData(tagsData);
+      }
+    } catch (err) {
+      console.error('Failed to fetch tag data:', err);
+    } finally {
+      setIsLoadingTags(false);
+    }
+  };
 
   // Format duration from seconds to MM:SS
   const formatDuration = (seconds) => {
@@ -26,6 +55,16 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
     if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substr(0, maxLength) + '...';
+  };
+
+  // Find tag name from ID
+  const findTagName = (tagId) => {
+    if (typeof tagId === 'object' && tagId.name) {
+      return tagId.name;
+    }
+    
+    const tag = tagData.find(t => t._id === tagId);
+    return tag ? tag.name : tagId;
   };
 
   const handleLike = async (e) => {
@@ -48,6 +87,7 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
           ? likes.filter((id) => id !== user._id)
           : [...likes, user._id];
         setLikes(newLikes);
+        setIsLiked(!isLiked);
 
         // Call the onLike callback if provided
         if (onLike) {
@@ -91,13 +131,6 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
     if (!category) return '';
     if (typeof category === 'string') return category;
     return category.name || '';
-  };
-
-  // Helper function to get tag name
-  const getTagName = (tag) => {
-    if (!tag) return '';
-    if (typeof tag === 'string') return tag;
-    return tag.name || '';
   };
 
   return (
@@ -152,7 +185,7 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
             {podcast.tags && podcast.tags.length > 0 && 
               podcast.tags.map((tag, index) => (
                 <span key={index} className="text-xs bg-gray-50 text-gray-600 px-2 py-1 rounded-full">
-                  {getTagName(tag)}
+                  {findTagName(tag)}
                 </span>
               ))
             }
