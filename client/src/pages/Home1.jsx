@@ -16,12 +16,15 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const requireAuth = () => {
+    window.scrollTo(0, 0); // scroll to top
     navigate('/login');
   };
-
+  
   const registeraccount = () => {
+    window.scrollTo(0, 0); // scroll to top
     navigate('/register');
   };
+  
 
   useEffect(() => {
     // Simulate loading data
