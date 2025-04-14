@@ -280,7 +280,7 @@ const About = () => {
             {companyValues.map((value, index) => (
               <div
                 key={index}
-                className={`animate-hidden transition-all duration-700 delay-${index * 100} transform translate-y-8 opacity-0 animate-in:translate-y-0 animate-in:opacity-100`}
+                className={`animate-hidden transition-all duration-700 ${index === 0 ? 'delay-100' : index === 1 ? 'delay-200' : index === 2 ? 'delay-300' : 'delay-400'} transform translate-y-8 opacity-0 animate-in:translate-y-0 animate-in:opacity-100`}
               >
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full border border-gray-100">
                   <div className="bg-indigo-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
