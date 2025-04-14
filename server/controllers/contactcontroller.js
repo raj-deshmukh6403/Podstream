@@ -18,14 +18,14 @@ exports.sendContactMessage = async (req, res) => {
   try {
     // Email content - now showing as coming from the user's email
     const mailOptions = {
-        from: `"${name}" <${email}>`,
+        from: `"${name} via PodStream" <${process.env.EMAIL_USERNAME}>`,
         replyTo: email,
         to: process.env.CONTACT_EMAIL_RECIPIENT,
         subject: `PodStream Contact: ${subject || 'New Contact Form Submission'}`,
         html: `
           <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
             <div style="text-align: center;">
-              <h1 style="color: #4CAF50;">📬 New Message from PodStream</h1>
+              <h1 style="color: #4CAF50;">📬 New Inquiry from PodStream Contact</h1>
             </div>
             <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
               <p><strong>Name:</strong> ${name}</p>
