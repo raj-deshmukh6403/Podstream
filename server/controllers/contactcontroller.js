@@ -6,7 +6,7 @@ require('dotenv').config();
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE, // e.g., 'gmail'
   auth: {
-    user: process.env.EMAIL_USER,
+    user: process.env.EMAIL_USERNAME,
     pass: process.env.EMAIL_PASSWORD,   
   },
 });
@@ -50,7 +50,7 @@ exports.subscribeToNewsletter = async (req, res) => {
   try {
     // Email content for notification to admin
     const notificationMail = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_USERNAME,
       to: process.env.NEWSLETTER_EMAIL_RECIPIENT, // Your admin email 
       subject: 'New Newsletter Subscription',
       html: `
@@ -65,7 +65,7 @@ exports.subscribeToNewsletter = async (req, res) => {
     
     // Send confirmation to subscriber - from your system email
     const confirmationMail = {
-      from: `"PodStream" <${process.env.EMAIL_USER}>`, // This ensures it comes from your system email
+      from: `"PodStream" <${process.env.EMAIL_USERNAME}>`, // This ensures it comes from your system email
       to: email, // The subscriber's email
       subject: 'Welcome to PodStream Newsletter!',
       html: `
