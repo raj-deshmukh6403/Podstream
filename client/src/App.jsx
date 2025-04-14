@@ -105,6 +105,8 @@ import CreatorRoute from "./components/CreatorRoute";
 // Pages
 import Home from "./pages/Home";
 import Home1 from "./pages/Home1";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
@@ -138,6 +140,8 @@ function AppRoutes() {
           index
           element={isAuthenticated ? <Home /> : <Navigate to="/home1" />}
         />
+        <Route path="contact" element={<Contact />} />
+        <Route path="about" element={<About />} />
         <Route path="home1" element={<Home1 />} />
         <Route path="podcast/:id" element={<PodcastDetails />} />
         <Route path="login" element={<Login />} />

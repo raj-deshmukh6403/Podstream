@@ -244,10 +244,16 @@ export default function Layout() {
   };
 
   const navLinks = [
-    !isAuthenticated
-      ? { path: '/home1', icon: <FiHome className="w-5 h-5" />, label: 'Home' }
-      : { path: '/', icon: <FiHome className="w-5 h-5" />, label: 'Home' },
-  
+    ...(!isAuthenticated
+      ? [
+          { path: '/home1', icon: <FiHome className="w-5 h-5" />, label: 'Home' },
+          { path: '/about', icon: <FiInfo className="w-5 h-5" />, label: 'About Us' },
+          { path: '/contact', icon: <FiPhone className="w-5 h-5" />, label: 'Contact' },
+        ]
+      : [
+          { path: '/', icon: <FiHome className="w-5 h-5" />, label: 'Home' },
+        ]
+    ),
     ...(isAuthenticated
       ? user?.role === 'admin'
         ? [
