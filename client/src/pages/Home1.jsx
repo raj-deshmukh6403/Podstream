@@ -116,7 +116,7 @@ const HomePage = () => {
   // For creators section
   const creatorStats = [
     { name: 'Subscribers', value: 32500, icon: '👥', color: 'bg-blue-500' },
-    { name: 'Revenue', value: '$4,250', icon: '💰', color: 'bg-blue-600' },
+    { name: 'Revenue', value: '₹4,250', icon: '💰', color: 'bg-blue-600' },
     { name: 'Rating', value: '4.8/5', icon: '⭐', color: 'bg-blue-700' },
     { name: 'Downloads', value: '185K', icon: '📥', color: 'bg-blue-800' }
   ];
