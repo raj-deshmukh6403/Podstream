@@ -74,10 +74,10 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [isLoading, loading]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+  
+
 
   // Featured podcasts data
   const featuredPodcasts = [
@@ -217,19 +217,6 @@ const HomePage = () => {
     { name: 'Smart Speaker', value: 5 }
   ];
 
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="flex items-center justify-center h-screen bg-blue-50">
-  //       <div className="text-center">
-  //         <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full mx-auto animate-spin"></div>
-  //         <h2 className="mt-4 text-xl font-semibold text-blue-800">Loading PodStream...</h2>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-  
-  
 
   return (
     <div className="min-h-screen bg-blue-50 text-blue-900 pb-20">
