@@ -73,6 +73,12 @@ const HomePage = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (!isLoading && !loading) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [isLoading, loading]);
+
   // Featured podcasts data
   const featuredPodcasts = [
     { id: 1, title: 'Tech Today', host: 'Alex Johnson', category: 'Technology', image: '/images/image/techtoday.jpeg', episodes: 124, listeners: '1.2M' },
@@ -216,15 +222,8 @@ const HomePage = () => {
     return (
       <div className="flex items-center justify-center h-screen bg-blue-50">
         <div className="text-center space-y-4">
-          {/* Animated Waveform Loader */}
-          <div className="flex items-end justify-center space-x-2 h-16">
-            <div className="w-2 bg-blue-600 animate-bar1 rounded-sm" />
-            <div className="w-2 bg-blue-600 animate-bar2 rounded-sm" />
-            <div className="w-2 bg-blue-600 animate-bar3 rounded-sm" />
-            <div className="w-2 bg-blue-600 animate-bar1 rounded-sm" />
-            <div className="w-2 bg-blue-600 animate-bar2 rounded-sm" />
-            <div className="w-2 bg-blue-600 animate-bar3 rounded-sm" />
-          </div>
+          {/* Circular Spinner */}
+          <div className="w-16 h-16 border-4 border-t-4 border-blue-600 border-solid rounded-full animate-spin"></div>
           <h2 className="text-xl font-semibold text-blue-800">
             Loading PodStream...
           </h2>
