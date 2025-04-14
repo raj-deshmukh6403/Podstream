@@ -9,7 +9,8 @@ const {
   recordPlay,
   getPodcastsByUser,
   getPodcastStats,
-  getUserPodcasts
+  getUserPodcasts,
+  getRandomPodcast
 } = require('../controllers/podcastController');
 
 const { protect, authorize } = require('../middleware/authMiddleware');
@@ -23,6 +24,8 @@ router.get('/stats', protect, getPodcastStats);
 router.route('/')
   .get(getPodcasts)
   .post(protect, authorize('creator', 'admin'), createPodcast);
+
+router.get('/randompodcast',getRandomPodcast);  
 
 // Get user's podcasts
 router.get('/user', protect, getUserPodcasts);

@@ -480,3 +480,30 @@ exports.getUserPodcasts = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getRandomPodcast = async (req, res, next) => {
+  try {
+    const podcasts = await Podcast.aggregate([{ $sample: { size: 1 } }]);
+
+    if (podcasts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No podcasts found'
+      });
+    }
+
+    const podcast = await Podcast.findById(podcasts[0]._id)
+      .populate('creator', 'username profileImage bio')
+      .populate('category', 'name description')
+      .populate('Tag', 'name slug');
+
+
+
+    res.status(200).json({
+      success: true,
+      data: podcast
+    });
+  } catch (error) {
+    next(error);
+  }
+};

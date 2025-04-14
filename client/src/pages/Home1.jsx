@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { LineChart, AreaChart, BarChart, PieChart, Pie, Line, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { FaPlay, FaPause } from "react-icons/fa";
 import NewsletterSection from '../pages/NewsletterSection';
 
 const HomePage = () => {
@@ -12,6 +14,42 @@ const HomePage = () => {
   const [showExploreModal, setShowExploreModal] = useState(false);
   const [activePage, setActivePage] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [podcast, setPodcast] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isPlaying1, setIsPlaying1] = useState(false);
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const fetchPodcast = async () => {
+      try {
+        const response = await axios.get(
+          "https://podstreamb.vercel.app/api/podcasts/randompodcast"
+        );
+        setPodcast(response.data.data);
+        console.log(response);
+      } catch (err) {
+        console.log("error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPodcast();
+  }, []);
+
+  const togglePlay1 = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying1) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+
+    setIsPlaying1(!isPlaying1);
+  };
+  
 
   const navigate = useNavigate();
 
@@ -228,6 +266,69 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
+     {/* sample podcast */}
+      <section className="w-full bg-gray-50 py-12 px-6 md:px-16">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center">
+            {/* Left Side - Info */}
+            <div className="md:w-1/2 space-y-6">
+              <h1 className="text-4xl font-bold text-gray-800">
+                🎧 Discover New Voices
+              </h1>
+              <p className="text-lg text-gray-600">
+                Dive into amazing podcasts from creators around the world.
+              </p>
+              <div className="space-y-2">
+                <p>
+                  <strong>Category:</strong> {podcast.category?.name}
+                </p>
+                <p>
+                  <strong>Creator:</strong> {podcast.creator?.username}
+                </p>
+                <p>
+                  <strong>Seasons:</strong> {podcast.seasons} &nbsp; | &nbsp; Episode: {podcast.episode}
+                </p>
+                {/* Tags */}
+              
+                {/* Likes */}
+                <p className="text-sm text-gray-700 mt-2">
+          ❤ {podcast.likes?.length || 0} Likes
+        </p>
+
+              </div>
+            </div>
+
+            {/* Right Side - Image + Audio */}
+            <div className="md:w-1/2 relative group">
+              <div className="relative w-full rounded overflow-hidden shadow-lg">
+                <img
+                  src={podcast.coverImage?.url}
+                  alt="Podcast Cover"
+                  className="w-full max-h-[420px] object-contain rounded bg-white"
+                />
+
+                {/* Audio Play Button */}
+                <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300">
+                  {podcast.audioFile?.url && (
+                    <>
+                      <audio ref={audioRef} src={podcast.audioFile.url} />
+                      <button
+                        className="bg-white p-4 rounded-full shadow-lg hover:scale-110 transition"
+                        onClick={togglePlay1}
+                      >
+                        {isPlaying1 ? (
+                          <FaPause className="text-black text-xl" />
+                        ) : (
+                          <FaPlay className="text-black text-xl" />
+                        )}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
       {/* Featured Podcasts */}
       <section className="py-12 px-6">
