@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, AreaChart, BarChart, PieChart, Pie, Line, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useNavigate } from 'react-router-dom';
+import NewsletterSection from '../pages/NewsletterSection';
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,6 +12,16 @@ const HomePage = () => {
   const [showExploreModal, setShowExploreModal] = useState(false);
   const [activePage, setActivePage] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const requireAuth = () => {
+    navigate('/login');
+  };
+
+  const registeraccount = () => {
+    navigate('/register');
+  };
 
   useEffect(() => {
     // Simulate loading data
@@ -22,12 +34,12 @@ const HomePage = () => {
 
   // Featured podcasts data
   const featuredPodcasts = [
-    { id: 1, title: 'Tech Today', host: 'Alex Johnson', category: 'Technology', image: '/api/placeholder/300/300', episodes: 124, listeners: '1.2M' },
-    { id: 2, title: 'Mindful Moments', host: 'Sarah Chen', category: 'Wellness', image: '/api/placeholder/300/300', episodes: 87, listeners: '890K' },
-    { id: 3, title: 'Business Insights', host: 'Michael Roberts', category: 'Business', image: '/api/placeholder/300/300', episodes: 56, listeners: '670K' },
-    { id: 4, title: 'History Untold', host: 'Emma Williams', category: 'Education', image: '/api/placeholder/300/300', episodes: 42, listeners: '510K' },
-    { id: 5, title: 'Comedy Hour', host: 'Dave Miller', category: 'Entertainment', image: '/api/placeholder/300/300', episodes: 210, listeners: '2.5M' },
-    { id: 6, title: 'True Crime Stories', host: 'Rachel Thompson', category: 'Crime', image: '/api/placeholder/300/300', episodes: 67, listeners: '950K' }
+    { id: 1, title: 'Tech Today', host: 'Alex Johnson', category: 'Technology', image: '/images/image/techtoday.jpeg', episodes: 124, listeners: '1.2M' },
+    { id: 2, title: 'Mindful Moments', host: 'Sarah Chen', category: 'Wellness', image: '/images/image/mindmoments.jpeg', episodes: 87, listeners: '890K' },
+    { id: 3, title: 'Business Insights', host: 'Michael Roberts', category: 'Business', image: '/images/image/business.jpeg', episodes: 56, listeners: '670K' },
+    { id: 4, title: 'History Untold', host: 'Emma Williams', category: 'Education', image: '/images/image/history.jpeg', episodes: 42, listeners: '510K' },
+    { id: 5, title: 'Comedy Hour', host: 'Dave Miller', category: 'Entertainment', image: '/images/image/comedy.jpeg', episodes: 210, listeners: '2.5M' },
+    { id: 6, title: 'True Crime Stories', host: 'Rachel Thompson', category: 'Crime', image: '/images/image/crime.jpeg', episodes: 67, listeners: '950K' }
   ];
 
   // Top categories
@@ -132,21 +144,21 @@ const HomePage = () => {
       name: 'Jessica K.',
       role: 'Daily Commuter',
       text: 'PodStream has completely transformed my daily commute. The recommendations are spot on, and I discover new shows I love every week!',
-      avatar: '/api/placeholder/60/60'
+      avatar: '/images/image/jessica.jpeg'
     },
     {
       id: 2,
       name: 'Marcus T.',
       role: 'Podcast Creator',
       text: 'As a creator, the analytics and audience insights have been invaluable. My subscriber count has doubled since joining PodStream.',
-      avatar: '/api/placeholder/60/60'
+      avatar: '/images/image/Marcus.jpeg'
     },
     {
       id: 3,
       name: 'Elena R.',
       role: 'Fitness Enthusiast',
       text: 'I love having all my wellness and fitness podcasts in one place. The offline download feature is perfect for my gym sessions.',
-      avatar: '/api/placeholder/60/60'
+      avatar: '/images/image/Elena.jpeg'
     }
   ];
 
@@ -201,13 +213,14 @@ const HomePage = () => {
                 >
                   Start Listening
                 </button>
-                <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition">
+                <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-blue-700 transition"
+                onClick={registeraccount}>
                   Create Account
                 </button>
               </div>
             </div>
             <div className="md:w-1/2 md:pl-10">
-              <img src="/api/placeholder/600/400" alt="Podcast Illustration" className="rounded-lg shadow-2xl" />
+              <img src="/images/image/podcast.jpeg" alt="Podcast Illustration" className="rounded-lg shadow-2xl" />
             </div>
           </div>
         </div>
@@ -227,7 +240,8 @@ const HomePage = () => {
                 <div className="relative">
                   <img src={podcast.image} alt={podcast.title} className="w-full aspect-square object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                    <button className="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-blue-600 transition">
+                    <button className="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center hover:bg-blue-600 transition"
+                    onClick={requireAuth}>
                       ▶
                     </button>
                   </div>
@@ -604,7 +618,8 @@ const HomePage = () => {
                 ))}
               </div>
               
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition">
+              <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+              onClick={requireAuth}>
                 Join Creator Program
               </button>
             </div>
@@ -648,24 +663,8 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-12 px-6 bg-gradient-to-r from-blue-500 to-blue-700">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Stay Updated</h2>
-          <p className="mb-8 text-blue-100">Subscribe to our newsletter for the latest podcast releases and exclusive content.</p>
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-2">
-            <input 
-              type="email" 
-              placeholder="Your email address" 
-              className="px-4 py-3 rounded-full focus:outline-none text-blue-900 w-full sm:w-80 shadow-lg"
-            />
-            <button className="bg-white text-blue-700 px-6 py-3 rounded-full font-bold hover:bg-blue-50 transition shadow-lg">
-              Subscribe
-            </button>
-          </div>
-          <p className="text-blue-200 text-xs mt-4">We respect your privacy and will never share your information.</p>
-        </div>
-      </section>
+     {/* Place the newsletter section where you want it to appear */}
+     <NewsletterSection />
 
       {/* How It Works */}
       <section className="py-12 px-6">
@@ -751,10 +750,12 @@ const HomePage = () => {
               <div className="mt-6">
                 <h4 className="text-lg font-semibold mb-4">Start Your Journey</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <button className="bg-blue-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center">
+                  <button className="bg-blue-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center"
+                  onClick={requireAuth}>
                     <span className="mr-2">🎧</span> Browse All Podcasts
                   </button>
-                  <button className="bg-blue-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-600 transition flex items-center justify-center">
+                  <button className="bg-blue-500 text-white px-4 py-3 rounded-lg font-medium hover:bg-blue-600 transition flex items-center justify-center"
+                  onClick={requireAuth}>
                     <span className="mr-2">🔍</span> Search By Topic
                   </button>
                 </div>
@@ -764,7 +765,8 @@ const HomePage = () => {
                 <h4 className="text-lg font-semibold mb-2">New User?</h4>
                 <p className="text-blue-700 mb-4">Create an account to save favorites, sync across devices, and get personalized recommendations.</p>
                 <div className="flex space-x-3">
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition flex-1">
+                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition flex-1"
+                  onClick={registeraccount}>
                     Create Account
                   </button>
                   <button className="bg-white text-blue-600 border border-blue-500 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition">

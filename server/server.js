@@ -13,6 +13,7 @@ const emailRoutes = require('./routes/emailRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 
 // Import error handler middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -26,6 +27,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: 'https://podstreamf.vercel.app',
+  // origin: 'http://localhost:5173',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -44,6 +46,7 @@ app.use('/api/email', emailRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/tags', tagRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api', apiRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
