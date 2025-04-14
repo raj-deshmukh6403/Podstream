@@ -12,8 +12,8 @@ import {
   Linkedin,
   Twitter,
 } from "lucide-react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
+
 const teamMembers = [
   {
     name: "Om Kumavat",
@@ -60,7 +60,6 @@ const teamMembers = [
 const About = () => {
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <div className="bg-white border-b">
@@ -196,7 +195,6 @@ const About = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
