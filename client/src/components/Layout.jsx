@@ -224,7 +224,7 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { FiHome, FiGrid, FiUpload, FiUser, FiSettings, FiLogOut, FiMenu, FiX } from 'react-icons/fi';
+import { FiHome, FiGrid, FiUpload, FiUser, FiSettings, FiLogOut, FiMenu, FiX , FiInfo,FiPhone} from 'react-icons/fi';
 // import Dashboard from '../pages/Dashboard';
 
 export default function Layout() {
