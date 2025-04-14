@@ -109,7 +109,7 @@ const ContactUs = () => {
     setSubscribeStatus('pending');
     
     try {
-      const response = await axios.post('https://podstreamb.vercel.app/api/subscribe', { email: newsletterEmail });
+      const response = await axios.post('https://podstreamb.vercel.app/api/subscribenews', { email: newsletterEmail });
       
       if (response.data.success) {
         setSubscribeStatus('success');

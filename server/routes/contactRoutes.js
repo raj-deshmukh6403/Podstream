@@ -7,6 +7,6 @@ const contactController = require('../controllers/contactcontroller');
 router.post('/contact', contactController.sendContactMessage);
 
 // Newsletter subscription route
-router.post('/subscribe', contactController.subscribeToNewsletter);
+router.post('/subscribenews', contactController.subscribeToNewsletter);
 
 module.exports = router;

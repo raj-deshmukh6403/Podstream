@@ -59,7 +59,7 @@ exports.subscribeToNewsletter = async (req, res) => {
 
     try {
         // Debugging: Log the recipient email
-        console.log("Newsletter recipient:", process.env.NEWSLETTER_EMAIL_RECIPIENT);
+        //console.log("Newsletter recipient:", process.env.NEWSLETTER_EMAIL_RECIPIENT);
 
         // Email content for notification to admin
         const notificationMail = {
@@ -83,7 +83,7 @@ exports.subscribeToNewsletter = async (req, res) => {
         };
 
         // Debugging: Log the notification email content
-        console.log("Notification email content:", JSON.stringify(notificationMail, null, 2));
+        //console.log("Notification email content:", JSON.stringify(notificationMail, null, 2));
 
         // Send email notification to admin
         try {
