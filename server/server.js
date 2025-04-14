@@ -14,6 +14,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const apiRoutes = require('./routes/apiRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // Import error handler middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -47,6 +48,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/tags', tagRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api', apiRoutes);
+app.use('/api', contactRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

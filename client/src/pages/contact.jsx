@@ -18,20 +18,12 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "axios"; // Make sure axios is installed
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.6, ease: "easeInOut" },
-};
-
-const staggerContainer = {
-  initial: {},
-  animate: {
-    transition: {
-      staggerChildren: 0.2,
-    },
-  },
 };
 
 const pulseAnimation = {
@@ -46,7 +38,7 @@ const pulseAnimation = {
   }
 };
 
-const Contact = () => {
+const ContactUs = () => {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -54,7 +46,13 @@ const Contact = () => {
     message: "",
   });
   
-  const [submitStatus, setSubmitStatus] = useState(null); // null, 'success', 'error'
+  const [submitStatus, setSubmitStatus] = useState(null); // null, 'pending', 'success', 'error'
+  const [submitMessage, setSubmitMessage] = useState("");
+  
+  // For newsletter subscription
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [subscribeStatus, setSubscribeStatus] = useState(null);
+  const [subscribeMessage, setSubscribeMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,16 +62,25 @@ const Contact = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically handle the form submission to your backend
-    // For demo purposes, we'll just simulate a successful submission
+    
+    // Form validation
+    if (!formState.name || !formState.email || !formState.message) {
+      setSubmitStatus('error');
+      setSubmitMessage('Please fill out all required fields before submitting.');
+      return;
+    }
+    
     setSubmitStatus('pending');
     
-    setTimeout(() => {
-      // Simulate response
-      if (formState.name && formState.email && formState.message) {
+    try {
+      // Send data to backend
+      const response = await axios.post('https://podstreamb.vercel.app/api/contact', formState);
+      
+      if (response.data.success) {
         setSubmitStatus('success');
+        setSubmitMessage(response.data.message);
         // Reset form after successful submission
         setFormState({
           name: "",
@@ -82,9 +89,39 @@ const Contact = () => {
           message: "",
         });
       } else {
-        setSubmitStatus('error');
+        throw new Error(response.data.message || 'Failed to send message');
       }
-    }, 1500);
+    } catch (error) {
+      setSubmitStatus('error');
+      setSubmitMessage(error.response?.data?.message || 'Something went wrong. Please try again later.');
+    }
+  };
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail) {
+      setSubscribeStatus('error');
+      setSubscribeMessage('Please enter your email address.');
+      return;
+    }
+    
+    setSubscribeStatus('pending');
+    
+    try {
+      const response = await axios.post('https://podstreamb.vercel.app/api/subscribe', { email: newsletterEmail });
+      
+      if (response.data.success) {
+        setSubscribeStatus('success');
+        setSubscribeMessage(response.data.message);
+        setNewsletterEmail("");
+      } else {
+        throw new Error(response.data.message || 'Failed to subscribe');
+      }
+    } catch (error) {
+      setSubscribeStatus('error');
+      setSubscribeMessage(error.response?.data?.message || 'Something went wrong. Please try again later.');
+    }
   };
 
   return (
@@ -131,9 +168,9 @@ const Contact = () => {
                     <div>
                       <h3 className="font-medium text-lg text-purple-100">Our Location</h3>
                       <p className="text-white/80 mt-1">
-                        123 Podcast Avenue<br />
-                        Digital District<br />
-                        Tech City, TC 10101
+                        123 Radhe Shyam <br />
+                        Trimurti Chowk<br />
+                        Dhankawadi, Pune 411043
                       </p>
                     </div>
                   </div>
@@ -143,7 +180,7 @@ const Contact = () => {
                     <div>
                       <h3 className="font-medium text-lg text-purple-100">Phone</h3>
                       <p className="text-white/80 mt-1">
-                        +1 (555) 123-4567<br />
+                        +91 9309815333<br />
                         Mon-Fri, 9AM-6PM
                       </p>
                     </div>
@@ -266,14 +303,14 @@ const Contact = () => {
                     {submitStatus === 'success' && (
                       <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center text-green-700">
                         <Check className="mr-2" size={18} />
-                        Your message has been sent successfully! We'll get back to you soon.
+                        {submitMessage || 'Your message has been sent successfully! We\'ll get back to you soon.'}
                       </div>
                     )}
 
                     {submitStatus === 'error' && (
                       <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-700">
                         <AlertCircle className="mr-2" size={18} />
-                        Please fill out all required fields before submitting.
+                        {submitMessage || 'Please fill out all required fields before submitting.'}
                       </div>
                     )}
                   </div>
@@ -325,7 +362,7 @@ const Contact = () => {
             </div>
           </div>
 
-          <div className="text-center mt-10">
+          {/* <div className="text-center mt-10">
             <Link
               to="/faq"
               className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors duration-200 font-medium"
@@ -333,7 +370,7 @@ const Contact = () => {
               View all FAQs
               <ArrowRight className="ml-2" size={18} />
             </Link>
-          </div>
+          </div> */}
         </motion.section>
 
         {/* Map Section */}
@@ -343,16 +380,18 @@ const Contact = () => {
         >
           <h2 className="text-2xl font-bold text-purple-900 mb-6 text-center">Visit Our Studio</h2>
           <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
-            {/* Placeholder for an actual map integration */}
-            <div className="bg-gray-200 w-full h-64 md:h-96 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="mx-auto mb-4 text-purple-500" size={40} />
-                <p className="text-gray-600 font-medium">
-                  Interactive map would be displayed here.<br />
-                  123 Podcast Avenue, Tech City
-                </p>
-              </div>
-            </div>
+            {/* Google Maps iframe */}
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.991629657615!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1651234567890!5m2!1sen!2sus" 
+              width="100%" 
+              height="450" 
+              style={{ border: 0 }} 
+              allowFullScreen="" 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="PodStream Studio Location"
+              className="rounded-lg"
+            ></iframe>
           </div>
         </motion.section>
 
@@ -375,22 +414,51 @@ const Contact = () => {
               </ul>
             </div>
             <div className="md:col-span-2">
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleNewsletterSubmit}>
                 <div>
                   <input
                     type="email"
                     placeholder="Your email address"
                     className="w-full px-4 py-3 rounded-lg focus:ring-2 focus:ring-white outline-none bg-white/20 backdrop-blur-sm placeholder-white/70 text-white border border-white/30"
                     required
+                    value={newsletterEmail}
+                    onChange={(e) => setNewsletterEmail(e.target.value)}
                   />
                 </div>
                 <button
                   type="submit"
+                  disabled={subscribeStatus === 'pending'}
                   className="w-full bg-white text-purple-600 font-bold py-3 px-6 rounded-lg hover:bg-purple-50 transition-colors duration-300 flex items-center justify-center"
                 >
-                  <Headphones className="mr-2" size={18} />
-                  Subscribe Now
+                  {subscribeStatus === 'pending' ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Subscribing...
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <Headphones className="mr-2" size={18} />
+                      Subscribe Now
+                    </span>
+                  )}
                 </button>
+                
+                {subscribeStatus === 'success' && (
+                  <div className="mt-2 p-3 bg-white/10 border border-white/30 rounded-lg flex items-center text-white">
+                    <Check className="mr-2" size={18} />
+                    {subscribeMessage || 'You have successfully subscribed to our newsletter!'}
+                  </div>
+                )}
+
+                {subscribeStatus === 'error' && (
+                  <div className="mt-2 p-3 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center text-white">
+                    <AlertCircle className="mr-2" size={18} />
+                    {subscribeMessage || 'Something went wrong. Please try again.'}
+                  </div>
+                )}
               </form>
               <p className="text-white/70 text-sm mt-4">
                 By subscribing, you agree to receive marketing emails from PodStream. You can unsubscribe at any time.
@@ -414,4 +482,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactUs;
