@@ -447,14 +447,26 @@ export default function Layout() {
             <div>
               <h3 className="font-semibold text-gray-900 mb-4">Connect</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">Twitter</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">Discord</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-blue-600">GitHub</a></li>
+                <li>
+                  <a href="https://x.com/rajvardhan1809" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
+                    X
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.linkedin.com/in/rajvardhan-deshmukh-323787229/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/raj-deshmukh6403" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
+                    GitHub
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
           <div className="border-t mt-8 pt-8 text-center text-gray-600">
-            © {new Date().getFullYear()} Podcastify. All rights reserved.
+            © {new Date().getFullYear()} PodStream. All rights reserved.
           </div>
         </div>
       </footer>
