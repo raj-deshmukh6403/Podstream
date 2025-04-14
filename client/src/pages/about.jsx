@@ -291,10 +291,12 @@ const About = () => {
             PodStream is the place where audio content comes to life.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105">
+            <button className="bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105"
+              onClick={() => window.location.href = '/login'}>
               Start Listening
             </button>
-            <button className="bg-white text-purple-600 border-2 border-purple-600 font-bold py-3 px-8 rounded-full shadow-md transform transition-all duration-300 hover:scale-105 hover:bg-purple-50">
+            <button className="bg-white text-purple-600 border-2 border-purple-600 font-bold py-3 px-8 rounded-full shadow-md transform transition-all duration-300 hover:scale-105 hover:bg-purple-50"
+              onClick={() => window.location.href = '/register'}>
               Create Account
             </button>
           </div>
