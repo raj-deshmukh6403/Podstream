@@ -211,22 +211,8 @@ const HomePage = () => {
     { name: 'Smart Speaker', value: 5 }
   ];
 
-  // Toggle play/pause
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
 
-  // Update progress bar
-  const handleProgressChange = (e) => {
-    setCurrentTime(e.target.value);
-  };
-
-  // Update volume
-  const handleVolumeChange = (e) => {
-    setVolume(e.target.value);
-  };
-
-  if (isLoading) {
+  if (isLoading && loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-blue-50">
         <div className="text-center">
