@@ -20,30 +20,30 @@ import { motion } from "framer-motion";
 
 const developers = [
   {
-    name: "Om Kumavat",
+    name: "Rajvardhan Deshmukh",
     role: "Lead Developer & Visionary",
     bio: "Driven by a passion for crafting seamless digital experiences and building innovative audio streaming solutions.",
-    image: "images/omphoto.jpg",
+    image: "images/image/raj.jpg",
     social: {
-      github: "https://github.com/omkumavat",
-      linkedin: "https://www.linkedin.com/in/om-kumavat-a34296258/",
+      github: "https://github.com/raj-deshmukh6403",
+      linkedin: "https://www.linkedin.com/in/rajvardhan-deshmukh-323787229/",
     },
   },
   {
-    name: "Shivaji Gadekar",
-    role: "Backend Architect & Engineer",
+    name: "Atharva Desai",
+    role: "Frontend Architect & Engineer",
     bio: "Focused on building robust, scalable, and efficient backend systems that power PodStream's core functionality and audio processing.",
-    image: "images/shivajiphoto.jpg",
+    image: "images/image/Marcus.jpeg",
     social: {
       github: "https://github.com/Shivagad",
       linkedin: "https://www.linkedin.com/in/shivaji-gadekar-bbb871264/",
     },
   },
   {
-    name: "Anuj Maheshwari",
+    name: "Aryan Jadhav",
     role: "Frontend Developer & UI/UX Designer",
     bio: "Dedicated to creating intuitive, visually appealing, and user-friendly interfaces for an exceptional podcast browsing experience.",
-    image: "images/anujphoto.jpg",
+    image: "images/image/Marcus.jpeg",
     social: {
       github: "https://github.com/infinityedge24",
       linkedin: "http://www.linkedin.com/in/anuj2304",
