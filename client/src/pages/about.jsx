@@ -142,7 +142,7 @@ const testimonials = [
   }
 ];
 
-const AboutUs = () => {
+const About = () => {
   // Initialize animation observer with improved options
   const observerRef = useIntersectionObserver({
     threshold: 0.15,
@@ -568,4 +568,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default About;
