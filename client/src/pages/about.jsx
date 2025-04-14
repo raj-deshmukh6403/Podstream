@@ -21,8 +21,8 @@ import { motion } from "framer-motion";
 const developers = [
   {
     name: "Rajvardhan Deshmukh",
-    role: "Lead Developer & Visionary",
-    bio: "Driven by a passion for crafting seamless digital experiences and building innovative audio streaming solutions.",
+    role: "Founder, Lead Developer & Project Architect",
+    bio: "Spearheaded the development and vision of PodStream. Passionate about building seamless digital experiences, with a strong focus on audio streaming solutions and full-stack development.",
     image: "images/image/raj.jpg",
     social: {
       github: "https://github.com/raj-deshmukh6403",
@@ -31,8 +31,8 @@ const developers = [
   },
   {
     name: "Atharva Desai",
-    role: "Frontend Architect & Engineer",
-    bio: "Focused on building robust, scalable, and efficient backend systems that power PodStream's core functionality and audio processing.",
+    role: "Frontend Contributor",
+    bio: "Assisted with frontend development tasks, supporting UI implementation and minor styling adjustments for PodStream.",
     image: "images/image/Marcus.jpeg",
     social: {
       github: "https://github.com/Shivagad",
@@ -41,8 +41,8 @@ const developers = [
   },
   {
     name: "Aryan Jadhav",
-    role: "Frontend Developer & UI/UX Designer",
-    bio: "Dedicated to creating intuitive, visually appealing, and user-friendly interfaces for an exceptional podcast browsing experience.",
+    role: "UI Support & Frontend Contributor",
+    bio: "Contributed to the frontend interface by assisting with UI/UX components and layout design support during development.",
     image: "images/image/Marcus.jpeg",
     social: {
       github: "https://github.com/infinityedge24",
@@ -50,6 +50,7 @@ const developers = [
     },
   },
 ];
+
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
