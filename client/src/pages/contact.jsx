@@ -379,20 +379,20 @@ const ContactUs = () => {
           variants={fadeIn}
         >
           <h2 className="text-2xl font-bold text-purple-900 mb-6 text-center">Visit Our Studio</h2>
-          <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
-            {/* Google Maps iframe */}
-            <iframe 
-              src="https://www.google.com/maps/place/%22Radhe+Sham%22Indira+Devi+Heights/@18.4592465,73.8493404,19.68z/data=!4m6!3m5!1s0x3bc2eac9e732e21d:0xc688250c82ae701d!8m2!3d18.4596952!4d73.8491311!16s%2Fg%2F11fxw2dbjq?entry=ttu&g_ep=EgoyMDI1MDQxMy4wIKXMDSoASAFQAw%3D%3D" 
-              width="100%" 
-              height="450" 
-              style={{ border: 0 }} 
-              allowFullScreen="" 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-              title="PodStream Studio Location"
-              className="rounded-lg"
-            ></iframe>
-          </div>
+          <div className="w-full h-[450px] rounded-lg overflow-hidden">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.4491714151545!2d73.84714631489156!3d18.45969528744402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2eac9e732e21d%3A0xc688250c82ae701d!2s%22Radhe%20Sham%22Indira%20Devi%20Heights!5e0!3m2!1sen!2sin!4v1611234567890!5m2!1sen!2sin" 
+            width="100%" 
+            height="100%" 
+            style={{ border: 0 }} 
+            allowFullScreen="" 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+            title="PodStream Studio Location"
+            className="rounded-lg"
+          />
+        </div>
+
         </motion.section>
 
         {/* Newsletter Section */}
