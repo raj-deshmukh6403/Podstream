@@ -74,8 +74,8 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+    window.scrollTo(0, 0); // instant scroll to top, no animation
+  }, []);  
   
 
 
