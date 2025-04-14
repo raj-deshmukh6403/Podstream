@@ -45,6 +45,25 @@ export default {
         'xl': '1rem',
         '2xl': '1.5rem',
       },
+      keyframes: {
+        bar1: {
+          '0%, 100%': { height: '30%' },
+          '50%': { height: '100%' },
+        },
+        bar2: {
+          '0%, 100%': { height: '50%' },
+          '50%': { height: '80%' },
+        },
+        bar3: {
+          '0%, 100%': { height: '20%' },
+          '50%': { height: '90%' },
+        },
+      },
+      animation: {
+        bar1: 'bar1 1s ease-in-out infinite',
+        bar2: 'bar2 1s ease-in-out infinite',
+        bar3: 'bar3 1s ease-in-out infinite',
+      },
     },
   },
   plugins: [],

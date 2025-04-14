@@ -215,13 +215,24 @@ const HomePage = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-blue-50">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full mx-auto animate-spin"></div>
-          <h2 className="mt-4 text-xl font-semibold text-blue-800">Loading PodStream...</h2>
+        <div className="text-center space-y-4">
+          {/* Animated Waveform Loader */}
+          <div className="flex items-end justify-center space-x-2 h-16">
+            <div className="w-2 bg-blue-600 animate-bar1 rounded-sm" />
+            <div className="w-2 bg-blue-600 animate-bar2 rounded-sm" />
+            <div className="w-2 bg-blue-600 animate-bar3 rounded-sm" />
+            <div className="w-2 bg-blue-600 animate-bar1 rounded-sm" />
+            <div className="w-2 bg-blue-600 animate-bar2 rounded-sm" />
+            <div className="w-2 bg-blue-600 animate-bar3 rounded-sm" />
+          </div>
+          <h2 className="text-xl font-semibold text-blue-800">
+            Loading PodStream...
+          </h2>
         </div>
       </div>
     );
   }
+  
 
   return (
     <div className="min-h-screen bg-blue-50 text-blue-900 pb-20">
@@ -255,14 +266,19 @@ const HomePage = () => {
 
      {/* sample podcast */}
      {loading ? (
-      // Inline section loading spinner
-      <div className="flex items-center justify-center h-64 bg-gray-100">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto animate-spin"></div>
-          <h2 className="mt-2 text-lg font-medium text-blue-800">Loading Podcast Details...</h2>
+        <div className="flex items-center justify-center h-64 bg-gray-100">
+          <div className="text-center">
+            {/* Music Bar Loader */}
+            <div className="flex items-end justify-center gap-1 h-20">
+              <div className="w-2 bg-blue-500 animate-bar1 rounded-sm" />
+              <div className="w-2 bg-blue-500 animate-bar2 rounded-sm" />
+              <div className="w-2 bg-blue-500 animate-bar3 rounded-sm" />
+            </div>
+            <h2 className="mt-4 text-lg font-medium text-blue-800">Loading Podcast Details...</h2>
+          </div>
         </div>
-      </div>
-    ) : (
+      ) : (
+
       <section className="w-full bg-gray-50 py-12 px-6 md:px-16">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center">
             {/* Left Side - Info */}
