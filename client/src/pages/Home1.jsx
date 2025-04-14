@@ -263,67 +263,136 @@ const HomePage = () => {
         </div>
       ) : (
 
-      <section className="w-full bg-gray-50 py-12 px-6 md:px-16">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center">
-            {/* Left Side - Info */}
-            <div className="md:w-1/2 space-y-6">
-              <h1 className="text-4xl font-bold text-gray-800">
+        <section className="w-full bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-6 md:px-16">
+        {/* Sample Indicator Banner */}
+        <div className="max-w-7xl mx-auto mb-4">
+          <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-3 rounded flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+            <span className="font-medium">Sample Podcast: This is a demo to test the podcast experience.</span>
+          </div>
+        </div>
+      
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center">
+          {/* Left Side - Info */}
+          <div className="md:w-1/2 space-y-6">
+            <div className="border-l-4 border-blue-500 pl-4">
+              <h1 className="text-4xl font-bold text-gray-800 mb-2">
                 🎧 Discover New Voices
               </h1>
               <p className="text-lg text-gray-600">
                 Dive into amazing podcasts from creators around the world.
               </p>
-              <div className="space-y-2">
-                <p>
-                  <strong>Category:</strong> {podcast.category?.name}
-                </p>
-                <p>
-                  <strong>Creator:</strong> {podcast.creator?.username}
-                </p>
-                <p>
-                  <strong>Seasons:</strong> {podcast.seasons} &nbsp; | &nbsp; Episode: {podcast.episode}
-                </p>
-                {/* Tags */}
-              
-                {/* Likes */}
-                <p className="text-sm text-gray-700 mt-2">
-                ❤️ {podcast.likes?.length || 0} Likes
-        </p>
-
-              </div>
+              <p className="text-sm bg-yellow-100 text-yellow-800 inline-block px-3 py-1 rounded-full mt-2">
+                Sample Content
+              </p>
             </div>
-
-            {/* Right Side - Image + Audio */}
-            <div className="md:w-1/2 relative group">
-              <div className="relative w-full rounded overflow-hidden shadow-lg">
-                <img
-                  src={podcast.coverImage?.url}
-                  alt="Podcast Cover"
-                  className="w-full max-h-[420px] object-contain rounded bg-white"
-                />
-
-                {/* Audio Play Button */}
-                <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center opacity-0 group-hover:opacity-100 transition duration-300">
-                  {podcast.audioFile?.url && (
-                    <>
-                      <audio ref={audioRef} src={podcast.audioFile.url} />
-                      <button
-                        className="bg-white p-4 rounded-full shadow-lg hover:scale-110 transition"
-                        onClick={togglePlay1}
-                      >
-                        {isPlaying1 ? (
-                          <FaPause className="text-black text-xl" />
-                        ) : (
-                          <FaPlay className="text-black text-xl" />
-                        )}
-                      </button>
-                    </>
-                  )}
-                </div>
+            
+            <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+              <div className="flex items-center space-x-2">
+                <span className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                <p className="font-medium text-gray-800">
+                  <span className="text-gray-500">Category:</span> {podcast.category?.name}
+                </p>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <span className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                <p className="font-medium text-gray-800">
+                  <span className="text-gray-500">Creator:</span> {podcast.creator?.username}
+                </p>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <span className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
+                  </svg>
+                </span>
+                <p className="font-medium text-gray-800">
+                  <span className="text-gray-500">Seasons:</span> {podcast.seasons} &nbsp; | &nbsp; 
+                  <span className="text-gray-500">Episode:</span> {podcast.episode}
+                </p>
+              </div>
+              
+              {/* Likes */}
+              <div className="flex items-center mt-4 pt-4 border-t border-gray-100">
+                <span className="bg-red-50 text-red-500 p-2 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                <p className="ml-2 font-medium text-gray-700">
+                  {podcast.likes?.length || 0} Likes
+                </p>
               </div>
             </div>
           </div>
-        </section>
+      
+          {/* Right Side - Image + Audio */}
+          <div className="md:w-1/2 relative group">
+            {/* Sample badge */}
+            <div className="absolute top-4 right-4 z-10 bg-yellow-500 text-white px-3 py-1 rounded-full font-bold text-sm shadow-md">
+              SAMPLE
+            </div>
+            
+            <div className="relative w-full rounded-xl overflow-hidden shadow-2xl transform transition-all duration-300 group-hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <img
+                src={podcast.coverImage?.url}
+                alt="Sample Podcast Cover"
+                className="w-full max-h-[420px] object-cover rounded-xl"
+              />
+      
+              {/* Audio Play Button */}
+              <div className="absolute inset-0 flex justify-center items-center">
+                {podcast.audioFile?.url && (
+                  <>
+                    <audio ref={audioRef} src={podcast.audioFile.url} />
+                    <button
+                      className="bg-white bg-opacity-90 p-6 rounded-full shadow-xl transform transition-all duration-300 group-hover:scale-110 hover:bg-opacity-100 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                      onClick={togglePlay1}
+                    >
+                      {isPlaying1 ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </button>
+                  </>
+                )}
+              </div>
+              
+              {/* Info overlay at bottom */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <div className="text-white">
+                  <p className="text-sm font-medium opacity-80">Sample audio for testing</p>
+                  <p className="text-lg font-bold">{podcast.category?.name}</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Test audio message */}
+            <div className="mt-3 bg-blue-50 p-3 rounded-lg text-center text-blue-800 text-sm">
+              Click the play button to test audio playback functionality
+            </div>
+          </div>
+        </div>
+      </section>
     )}
 
       {/* Featured Podcasts */}
