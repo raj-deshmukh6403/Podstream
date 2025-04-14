@@ -212,7 +212,7 @@ const HomePage = () => {
   ];
 
 
-  if (isLoading || loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen bg-blue-50">
         <div className="text-center">
@@ -254,6 +254,15 @@ const HomePage = () => {
       </div>
 
      {/* sample podcast */}
+     {loading ? (
+      // Inline section loading spinner
+      <div className="flex items-center justify-center h-64 bg-gray-100">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mx-auto animate-spin"></div>
+          <h2 className="mt-2 text-lg font-medium text-blue-800">Loading Podcast Details...</h2>
+        </div>
+      </div>
+    ) : (
       <section className="w-full bg-gray-50 py-12 px-6 md:px-16">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-center">
             {/* Left Side - Info */}
@@ -278,7 +287,7 @@ const HomePage = () => {
               
                 {/* Likes */}
                 <p className="text-sm text-gray-700 mt-2">
-          ❤ {podcast.likes?.length || 0} Likes
+                ❤️ {podcast.likes?.length || 0} Likes
         </p>
 
               </div>
@@ -315,6 +324,7 @@ const HomePage = () => {
             </div>
           </div>
         </section>
+    )}
 
       {/* Featured Podcasts */}
       <section className="py-12 px-6">
