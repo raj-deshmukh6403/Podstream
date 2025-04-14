@@ -382,7 +382,7 @@ const ContactUs = () => {
           <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
             {/* Google Maps iframe */}
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.991629657615!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1651234567890!5m2!1sen!2sus" 
+              src="https://www.google.com/maps/place/%22Radhe+Sham%22Indira+Devi+Heights/@18.4592465,73.8493404,19.68z/data=!4m6!3m5!1s0x3bc2eac9e732e21d:0xc688250c82ae701d!8m2!3d18.4596952!4d73.8491311!16s%2Fg%2F11fxw2dbjq?entry=ttu&g_ep=EgoyMDI1MDQxMy4wIKXMDSoASAFQAw%3D%3D" 
               width="100%" 
               height="450" 
               style={{ border: 0 }} 

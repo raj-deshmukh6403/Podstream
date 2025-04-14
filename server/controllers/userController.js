@@ -429,13 +429,24 @@ exports.forgotPassword = async (req, res) => {
     await user.save();
 
     const html = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px;">
-        <h2 style="color: #2c5282;">OTP for Password Reset</h2>
-        <p>Use the following OTP to reset your password. It expires in 10 minutes:</p>
-        <h3 style="text-align: center; color: #3182ce;">${otp}</h3>
-        <p>The otp will expire in 10 minutes.</p>
-        <br><br>
-        <p>If you didn’t request this, ignore this email.</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h1 style="color: #2c5282; margin: 0;">🔑 Password Reset Request</h1>
+          <p style="font-size: 14px; color: #555;">We received a request to reset your password.</p>
+        </div>
+        <div style="background-color: #ffffff; border: 1px dashed #3182ce; border-radius: 8px; padding: 20px; text-align: center;">
+          <p style="font-size: 16px; margin: 0; color: #333;">Your One-Time Password (OTP) is:</p>
+          <h2 style="font-size: 32px; color: #3182ce; margin: 10px 0;">${otp}</h2>
+          <p style="font-size: 14px; color: #555;">This OTP is valid for <strong>10 minutes</strong>.</p>
+        </div>
+        <p style="font-size: 14px; color: #555; margin-top: 20px;">
+          If you did not request a password reset, you can safely ignore this email.
+        </p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
+        <footer style="text-align: center; font-size: 12px; color: #999;">
+          <p>Thank you,</p>
+          <p><strong>Your App Team</strong></p>
+        </footer>
       </div>
     `;
 
