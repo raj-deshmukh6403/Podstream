@@ -494,7 +494,6 @@ exports.getRandomPodcast = async (req, res, next) => {
 
     const podcast = await Podcast.findById(podcasts[0]._id)
       .populate('creator', 'username profileImage bio')
-      .populate('category', 'name description')
       .populate('Tag', 'name slug');
 
 
