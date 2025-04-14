@@ -59,6 +59,10 @@ exports.subscribeToNewsletter = async (req, res) => {
   
   try {
     // Email content for notification to admin
+
+    console.log("Sending newsletter notification to:", process.env.NEWSLETTER_EMAIL_RECIPIENT);
+    
+    
     const notificationMail = {
         from: process.env.EMAIL_USERNAME,
         to: process.env.NEWSLETTER_EMAIL_RECIPIENT,
@@ -78,6 +82,8 @@ exports.subscribeToNewsletter = async (req, res) => {
           </div>
         `,
       };
+
+    console.log("Notification email content:", notificationMail);
     
     // Send email notification to admin
     await transporter.sendMail(notificationMail);
@@ -98,7 +104,7 @@ exports.subscribeToNewsletter = async (req, res) => {
               <p>Here's what you can look forward to:</p>
               <ul style="list-style: none; padding: 0;">
                 <li>🎧 Weekly podcast recommendations</li>
-                <li>📢 Platform updates</li>
+                <li>📢 Platform updates</li>    
                 <li>💡 Creator tips and tricks</li>
                 <li>🎉 Exclusive events and promotions</li>
               </ul>
@@ -115,6 +121,7 @@ exports.subscribeToNewsletter = async (req, res) => {
             </footer>
           </div>
         `,
+        text: `🎧 Welcome to PodStream!\nThanks for subscribing to our newsletter. You’ll now be the first to know about new podcasts, creator updates, and more!\n\nEnjoy listening,\nTeam PodStream`
       };
     
     await transporter.sendMail(confirmationMail);
