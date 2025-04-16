@@ -33,20 +33,20 @@ const developers = [
     name: "Atharva Desai",
     role: "Frontend Contributor",
     bio: "Assisted with frontend development tasks, supporting UI implementation and minor styling adjustments for PodStream.",
-    image: "images/image/Marcus.jpeg",
+    image: "images/image/atharva.jpg",
     social: {
-      github: "https://github.com/Shivagad",
-      linkedin: "https://www.linkedin.com/in/shivaji-gadekar-bbb871264/",
+      github: "https://github.com/iatharva6119",
+      linkedin: "https://www.linkedin.com/in/atharva-desai-754630252/",
     },
   },
   {
     name: "Aryan Jadhav",
     role: "UI Support & Frontend Contributor",
     bio: "Contributed to the frontend interface by assisting with UI/UX components and layout design support during development.",
-    image: "images/image/Marcus.jpeg",
+    image: "images/image/aryan.jpg",
     social: {
       github: "https://github.com/infinityedge24",
-      linkedin: "http://www.linkedin.com/in/anuj2304",
+      linkedin: "https://www.linkedin.com/in/aryan-jadhav-23a232260/",
     },
   },
 ];
