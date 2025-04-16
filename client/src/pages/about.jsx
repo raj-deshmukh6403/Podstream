@@ -48,7 +48,7 @@ const developers = [
     bio: "Contributed to the frontend interface by assisting with UI/UX components and layout design support during development.",
     image: "images/image/aryan.jpg",
     social: {
-      github: "https://github.com/infinityedge24",
+      github: "https://github.com/AryanJadhav2811",
       linkedin: "https://www.linkedin.com/in/aryan-jadhav-23a232260/",
       email: "aryanjadhav1128@gmail.com" 
     },
