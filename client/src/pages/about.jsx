@@ -14,6 +14,7 @@ import {
   Mic,
   Radio,
   Speaker,
+  Mail 
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -27,6 +28,7 @@ const developers = [
     social: {
       github: "https://github.com/raj-deshmukh6403",
       linkedin: "https://www.linkedin.com/in/rajvardhan-deshmukh-323787229/",
+      email: "rajvardhanhd6403@gmail.com"
     },
   },
   {
@@ -37,6 +39,7 @@ const developers = [
     social: {
       github: "https://github.com/iatharva6119",
       linkedin: "https://www.linkedin.com/in/atharva-desai-754630252/",
+      email: "atharva@podstream.com" 
     },
   },
   {
@@ -47,6 +50,7 @@ const developers = [
     social: {
       github: "https://github.com/infinityedge24",
       linkedin: "https://www.linkedin.com/in/aryan-jadhav-23a232260/",
+      email: "aryanjadhav1128@gmail.com" 
     },
   },
 ];
@@ -271,6 +275,16 @@ const About = () => {
                           rel="noopener noreferrer"
                         >
                           <Linkedin size={22} />
+                        </a>
+                      )}
+                      {developer.social.email && (
+                        <a
+                          href={`mailto:${developer.social.email}`}
+                          className="text-gray-500 hover:text-green-600 transition-colors duration-200"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Mail size={22} />
                         </a>
                       )}
                     </div>
