@@ -104,6 +104,7 @@ const RoleManagement = () => {
               <th className="py-2 px-4 border-b text-left">Change Role</th>
             </tr>
           </thead>
+
           <tbody>
             {filteredUsers.length > 0 ? (
               filteredUsers.map((user) => (

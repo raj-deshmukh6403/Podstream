@@ -228,7 +228,7 @@ import { FiHome, FiGrid, FiUpload, FiUser, FiSettings, FiLogOut, FiMenu, FiX , F
 // import Dashboard from '../pages/Dashboard';
 
 export default function Layout() {
-  const { user, logout, isAuthenticated, isAdmin } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
