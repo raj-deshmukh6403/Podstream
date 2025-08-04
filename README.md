@@ -59,6 +59,8 @@ Podstream addresses these challenges by providing:
 <details>
 <summary>Click to view screenshots</summary>
 
+---
+
 ### 🎧 Core Platform Features
 
 #### 🎵 Audio Player Features
