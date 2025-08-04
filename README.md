@@ -107,7 +107,7 @@ Podstream addresses these challenges by providing:
 </details>
 ---
 
-### 🎧 Core Platform Features
+## 🎧 Core Platform Features
 
 #### 🎵 Audio Player Features
 - **Custom Audio Controls**: Play, pause, seek, volume control
@@ -127,7 +127,6 @@ Podstream addresses these challenges by providing:
 - **Platform Analytics**: System-wide statistics and insights
 - **Category Management**: Organize and maintain content taxonomies
 
----
 
 ## 🚀 Features
 
