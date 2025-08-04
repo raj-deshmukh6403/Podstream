@@ -53,10 +53,58 @@ Podstream addresses these challenges by providing:
 
 ---
 
-## � Screenshots
+## 📊 Screenshots
 
-### 🏠 Homepage & User Experience
+### 🏠 User Dashboard
+<details>
+<summary>Click to view screenshots</summary>
 
+![User Dashboard](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/user-dashboard.png)
+*Clean and intuitive user dashboard with quick access to all features*
+
+![User Profile](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/profile.png)
+*User Profile Page with Edit Options*
+
+![Print Form](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/print-form.png)
+*Simple drag-and-drop file upload with real-time preview*
+
+![Payment Page](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/payment.png)
+*Secure payment integration with multiple payment options*
+
+![Payment Page](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/payment1.png)
+*Razorpay payment integration with multiple payment options*
+
+</details>
+
+### 👨‍💼 Admin Dashboard
+<details>
+<summary>Click to view screenshots</summary>
+
+![Admin Dashboard](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/admin-dashboard.png)
+*Comprehensive admin dashboard with analytics and insights*
+
+![Print Queue Management](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/print-queue.png)
+*Efficient print queue management with bulk operations*
+
+</details>
+
+### 📱 Mobile Experience
+<details>
+<summary>Click to view screenshots</summary>
+
+![Mobile Dashboard](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/mobile-view.jpg)
+*Fully responsive design optimized for mobile devices*
+
+</details>
+
+### 🎬 Feature Demos
+<details>
+<summary>Click to view screenshots</summary>
+
+![Print Preview](https://github.com/raj-deshmukh6403/e-Printer/blob/main/client/public/print-form1.png)
+*Real-time document preview with print settings
+
+</details>
 ---
 
 ### 🎧 Core Platform Features
