@@ -1,30 +1,52 @@
 # 🎧 Podstream - Full-Stack MERN Podcast Platform
 
-![Podstream Logo](client/public/logo.svg)
+<div align="center">
+  <img src="client/public/podstream-logo.svg" alt="Podstream Logo" width="300">
+  <br><br>
+</div>
 
 A modern, feature-rich podcast platform built with the MERN stack, offering seamless audio streaming, content management, and user engagement features. Podstream provides creators with powerful tools to upload, manage, and distribute their podcasts while giving listeners an exceptional browsing and listening experience.
 
-## 📸 Screenshots
+## 📸 Website Features & Screenshots
 
-### Homepage
+### 🏠 Homepage & Landing Page
 ![Homepage](client/public/images/image/podcast.jpeg)
 
-### Featured Content Areas
-- **Business Podcasts**: ![Business](client/public/images/image/business.jpeg)
-- **Comedy Shows**: ![Comedy](client/public/images/image/comedy.jpeg)
-- **True Crime**: ![Crime](client/public/images/image/crime.jpeg)
-- **History Content**: ![History](client/public/images/image/history.jpeg)
-- **Tech Today**: ![Tech](client/public/images/image/techtoday.jpeg)
-- **Mind Moments**: ![Mindfulness](client/public/images/image/mindmoments.jpeg)
+### 🎨 Content Categories
+Explore podcasts across diverse categories:
 
-### Creator Profiles
-<div style="display: flex; gap: 10px;">
-  <img src="client/public/images/image/aryan.jpg" alt="Aryan" width="150" height="150" style="border-radius: 50%;">
-  <img src="client/public/images/image/atharva.jpg" alt="Atharva" width="150" height="150" style="border-radius: 50%;">
-  <img src="client/public/images/image/Elena.jpeg" alt="Elena" width="150" height="150" style="border-radius: 50%;">
-  <img src="client/public/images/image/jessica.jpeg" alt="Jessica" width="150" height="150" style="border-radius: 50%;">
-  <img src="client/public/images/image/Marcus.jpeg" alt="Marcus" width="150" height="150" style="border-radius: 50%;">
-  <img src="client/public/images/image/raj.jpg" alt="Raj" width="150" height="150" style="border-radius: 50%;">
+| Category | Preview |
+|----------|---------|
+| **Business & Finance** | ![Business](client/public/images/image/business.jpeg) |
+| **Comedy & Entertainment** | ![Comedy](client/public/images/image/comedy.jpeg) |
+| **True Crime & Mystery** | ![Crime](client/public/images/image/crime.jpeg) |
+| **History & Culture** | ![History](client/public/images/image/history.jpeg) |
+| **Technology & Innovation** | ![Tech](client/public/images/image/techtoday.jpeg) |
+| **Mindfulness & Wellness** | ![Mindfulness](client/public/images/image/mindmoments.jpeg) |
+
+### 🎧 Audio Player Features
+- **Custom Audio Controls**: Play, pause, seek, volume control
+- **Progress Tracking**: Visual progress bar with time indicators
+- **Quality Streaming**: High-quality audio playback
+- **Responsive Design**: Works seamlessly on all devices
+
+### 📊 Dashboard & Analytics
+- **Creator Dashboard**: Comprehensive podcast management
+- **Real-time Analytics**: Track plays, likes, and engagement
+- **Content Management**: Easy upload and editing tools
+- **Performance Insights**: Detailed audience analytics
+
+### 👑 Admin Panel
+- **User Management**: Complete user administration
+- **Content Moderation**: Review and manage all content
+- **Platform Analytics**: System-wide statistics and insights
+- **Category Management**: Organize content taxonomies
+
+### Project Creator
+<div style="text-align: center;">
+  <img src="client/public/images/image/raj.jpg" alt="Rajvardhan" width="150" height="150" style="border-radius: 50%; margin: 0 auto;">
+  <h4>Rajvardhan Deshmukh</h4>
+  <p><em>Full-Stack Developer & Project Lead</em></p>
 </div>
 
 ## 🚀 Features
@@ -450,20 +472,19 @@ We welcome contributions to Podstream! Here's how you can help:
 
 This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Team & Contact
+## 👥 Creator & Contact
 
-### Development Team
-- **Project Lead**: [Your Name]
-- **Frontend Development**: React.js specialists
-- **Backend Development**: Node.js experts
-- **UI/UX Design**: Modern interface designers
-- **DevOps**: Deployment and infrastructure specialists
+### Project Creator
+**Rajvardhan Deshmukh** - *Full-Stack Developer*
+- **Role**: Project Lead, Frontend & Backend Development, UI/UX Design, DevOps
+- **Skills**: MERN Stack, React.js, Node.js, MongoDB, Modern Web Development
+- **GitHub**: [@raj-deshmukh6403](https://github.com/raj-deshmukh6403)
 
 ### Support & Community
 - **Documentation**: Comprehensive guides and API documentation
 - **Issue Tracking**: GitHub Issues for bug reports and feature requests
-- **Community Forum**: Discord/Slack for community discussions
-- **Email Support**: [support@podstream.com](mailto:support@podstream.com)
+- **Project Repository**: [Podstream on GitHub](https://github.com/raj-deshmukh6403/Podstream)
+- **Contact**: For inquiries and collaboration opportunities
 
 ## 🔮 Roadmap & Future Features
 
@@ -483,6 +504,10 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ by the Podstream Team**
+**Built with ❤️ by Rajvardhan Deshmukh**
 
 *Empowering creators, connecting communities, one podcast at a time.*
+
+<div align="center">
+  <img src="client/public/podstream-logo.svg" alt="Podstream" width="150">
+</div>
