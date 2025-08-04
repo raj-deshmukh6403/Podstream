@@ -59,23 +59,6 @@ Podstream addresses these challenges by providing:
 <details>
 <summary>Click to view screenshots</summary>
 
-![Homepage](client/public/images/image/podcast.jpeg)
-*Modern homepage design with intuitive navigation and featured content*
-
-</details>
-
-### 🎨 Content Categories & Discovery
-Explore podcasts across diverse categories:
-
-| Category | Preview | Description |
-|----------|---------|-------------|
-| **Business & Finance** | ![Business](client/public/images/image/business.jpeg) | Professional insights and market analysis |
-| **Comedy & Entertainment** | ![Comedy](client/public/images/image/comedy.jpeg) | Humor and entertainment content |
-| **True Crime & Mystery** | ![Crime](client/public/images/image/crime.jpeg) | Investigative stories and crime analysis |
-| **History & Culture** | ![History](client/public/images/image/history.jpeg) | Historical narratives and cultural exploration |
-| **Technology & Innovation** | ![Tech](client/public/images/image/techtoday.jpeg) | Latest tech trends and innovations |
-| **Mindfulness & Wellness** | ![Mindfulness](client/public/images/image/mindmoments.jpeg) | Mental health and wellness content |
-
 ### 🎧 Core Platform Features
 
 #### 🎵 Audio Player Features
@@ -97,16 +80,6 @@ Explore podcasts across diverse categories:
 - **Category Management**: Organize and maintain content taxonomies
 
 ---
-
-### Project Creator
-<div align="center">
-  <img src="client/public/images/image/raj.jpg" alt="Rajvardhan Deshmukh" width="150" height="150" style="border-radius: 50%;">
-  
-  ### **Rajvardhan Deshmukh**
-  *Full-Stack Developer & Project Lead*
-  
-  > *"Built Podstream to create a seamless ecosystem where podcast creators can focus on content while reaching their audience effectively."*
-</div>
 
 ## 🚀 Features
 
