@@ -56,8 +56,6 @@ Podstream addresses these challenges by providing:
 ## � Screenshots
 
 ### 🏠 Homepage & User Experience
-<details>
-<summary>Click to view screenshots</summary>
 
 ---
 
