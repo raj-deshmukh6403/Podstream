@@ -831,10 +831,9 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ### 🌟 About the Creator
 
-- 🎓 **Education**: Computer Science & Engineering Student
+- 🎓 **Education**: Information Technology & Engineering Student
 - 💼 **Experience**: 2+ years in Full Stack Web Development
 - 🌍 **Location**: Maharashtra, India
-- 💡 **Expertise**: MERN Stack, Modern Web Development, UI/UX Design, Cloud Architecture
 
 ### 🛠️ Technical Skills
 
