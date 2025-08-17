@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import api from '../utils/api';
 
+
 const PodcastCard = ({ podcast, onLike, canPlay }) => {
   const { user } = useAuth();
   const [isLiking, setIsLiking] = useState(false);
@@ -237,5 +238,6 @@ const PodcastCard = ({ podcast, onLike, canPlay }) => {
     </div>
   );
 };
+
 
 export default PodcastCard;
