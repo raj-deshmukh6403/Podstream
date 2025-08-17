@@ -823,7 +823,7 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 <div align="center">
   <img src="client/public/images/image/raj.jpg" alt="Rajvardhan Deshmukh" width="150" height="150" style="border-radius: 50%;">
   
-  ### **Rajvardhan Deshmukh**
+  ### **Atharva Desai**
   *Full Stack Developer & MERN Stack Specialist*
   
   > *"Passionate about creating seamless digital experiences that connect creators with their audiences. I built Podstream to democratize podcast creation and make audio content more accessible to everyone."*
@@ -854,10 +854,10 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:rajvardhanhd6403@gmail.com)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:datharva919@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rajvardhan-deshmukh-323787229/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/raj-deshmukh6403)
-[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://rajvardhanhd6403.github.io)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/iatharva6119)
+[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://iatharva6119.github.io)
 [![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/rajvardhan1809)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/raj_deshmukh_6403/)
 
@@ -883,9 +883,9 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
   
   ### ⭐ If you found this project helpful, please give it a star!
   
-  ![Star Badge](https://img.shields.io/github/stars/raj-deshmukh6403/Podstream?style=social)
+  ![Star Badge](https://img.shields.io/github/stars/iatharva6119/Podstream?style=social)
   
-  **Made with ❤️ by [Rajvardhan Deshmukh](https://github.com/raj-deshmukh6403)**
+  **Made with ❤️ by [Atharva Desai](https://github.com/iatharva6119)**
   
   ---
   
