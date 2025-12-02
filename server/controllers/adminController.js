@@ -78,6 +78,7 @@ exports.getStats = async (req, res) => {
           message: `New user ${user.username} registered`,
           timestamp: user.createdAt
         }))),
+      
       // Get recent podcasts
       Podcast.find({}, 'title creator createdAt')
         .sort({ createdAt: -1 })
@@ -88,6 +89,7 @@ exports.getStats = async (req, res) => {
           message: `New podcast "${podcast.title}" uploaded by ${podcast.creator.username}`,
           timestamp: podcast.createdAt
         })))
+      
     ]).then(results => {
       const [userActivity, podcastActivity] = results;
       return [...userActivity, ...podcastActivity]
@@ -859,4 +861,5 @@ exports.updatePodcastStatus = async (req, res) => {
       message: 'Error updating podcast status'
     });
   }
+
 };
