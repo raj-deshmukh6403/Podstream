@@ -16,6 +16,7 @@ exports.getPodcastAnalytics = async (req, res, next) => {
       });
     }
 
+    
     // Check if user is authorized to view analytics
     if (podcast.creator.toString() !== req.user.id && req.user.role !== 'admin') {
       return res.status(401).json({
@@ -356,4 +357,5 @@ function aggregateReferrerData(analytics) {
     .map(([source, count]) => ({ source, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 5);
+
 }

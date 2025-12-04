@@ -42,6 +42,7 @@ exports.uploadProfileImage = async (req, res, next) => {
         message: 'Please upload a file'
       });
     }
+    
 
     // Log the path to debug
     console.log('File path:', req.file.path);
@@ -561,4 +562,5 @@ exports.verifyOtp = async (req, res) => {
     console.error('OTP verification error:', error);
     res.status(500).json({ message: 'Server error' });
   }
+
 };

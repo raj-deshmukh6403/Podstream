@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { FaPlay, FaPause, FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 
+
 const AudioPlayer = ({ src, title, onEnded }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -131,5 +132,6 @@ const AudioPlayer = ({ src, title, onEnded }) => {
     </div>
   );
 };
+
 
 export default AudioPlayer; 
