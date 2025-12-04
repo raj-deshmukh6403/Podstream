@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // Create a new tag (protected, admin only)
 router.post('/', protect, authorize('admin'), async (req, res) => {
   const tag = new Tag({
@@ -33,6 +34,7 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
       data: newTag,
       message: 'Tag created successfully'
     });
+    
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -40,5 +42,6 @@ router.post('/', protect, authorize('admin'), async (req, res) => {
     });
   }
 });
+
 
 module.exports = router; 
