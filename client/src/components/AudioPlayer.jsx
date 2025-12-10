@@ -10,6 +10,7 @@ const AudioPlayer = ({ src, title, onEnded }) => {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(null);
 
+  
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -135,3 +136,4 @@ const AudioPlayer = ({ src, title, onEnded }) => {
 
 
 export default AudioPlayer; 
+
