@@ -20,6 +20,7 @@ const AnalyticsChart = ({ podcastId }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  
   useEffect(() => {
     const fetchAnalytics = async () => {
       setIsLoading(true);
@@ -155,5 +156,6 @@ const AnalyticsChart = ({ podcastId }) => {
     </div>
   );
 };
+
 
 export default AnalyticsChart;
